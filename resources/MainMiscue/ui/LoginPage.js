@@ -1507,7 +1507,7 @@ function orientionChangeMode(e) {
             			var Buttontype = menus.item(j).getElementsByTagName("menuitem").item(i).getAttribute("type");
             			var Buttonposition = menus.item(j).getElementsByTagName("menuitem").item(i).getAttribute("position");
             			var menuItemKey = menus.item(j).getElementsByTagName("menuitem").item(i).getAttribute("id");
-            			
+            			//Commit Test
             			//V1.9 SDK7 - Changed to local assets
             			var Buttonicon;
             			switch(menuItemKey)
