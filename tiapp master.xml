@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ti:app xmlns:ti="http://ti.appcelerator.org">
+    <deployment-targets>
+        <target device="tizen">false</target>
+        <target device="mobileweb">false</target>
+        <target device="iphone">true</target>
+        <target device="ipad">true</target>
+        <target device="blackberry">false</target>
+        <target device="android">true</target>
+    </deployment-targets>
+    <sdk-version>3.5.1.GA</sdk-version>
+    <id>com.twoeskimos.ReadingAssessment</id>
+    <name>Reading Assessment</name>
+    <version>1.1</version>
+    <publisher>2 Eskimos</publisher>
+    <url>http://www.2eskimos.com</url>
+    <!-- ^^ changed to match 2bap ^^ -->
+    <description>No description provided</description>
+    <copyright>2010 by 2eskimos</copyright>
+    <icon>appicon.png</icon>
+    <persistent-wifi>false</persistent-wifi>
+    <prerendered-icon>false</prerendered-icon>
+    <!-- ^^ changed to match 2bap ^^ -->
+    <statusbar-style>translucent_black</statusbar-style>
+    <!-- ^^ changed black to translucent_black. same as 2bap ^^ -->
+    <statusbar-hidden>true</statusbar-hidden>
+    <fullscreen>false</fullscreen>
+    <navbar-hidden>true</navbar-hidden>
+    <analytics>true</analytics>
+    <guid>6eab0b2e-c46c-42ea-9aaa-f1f48352a2bb</guid>
+    <ios>
+        <plist>
+            <dict>
+                <key>UIBackgroundModes</key>
+                <array>
+                    <string>audio</string>
+                </array>
+            </dict>
+        </plist>
+    </ios>
+    <property name="ti.ui.defaultunit" type="string">dp</property>
+    <!--<property name="ti.ui.defaultunit" type="string">dp</property>!-->
+    <iphone>
+        <orientations device="iphone">
+            <orientation>Ti.UI.PORTRAIT</orientation>
+            <!--<orientation>Ti.UI.LANDSCAPE_RIGHT</orientation>!-->
+            <!-- <orientation>Ti.UI.LANDSCAPE_LEFT</orientation>!-->
+        </orientations>
+        <orientations device="ipad">
+            <orientation>Ti.UI.PORTRAIT</orientation>
+            <!--<orientation>Ti.UI.UPSIDE_PORTRAIT</orientation>!-->
+            <!--<orientation>Ti.UI.LANDSCAPE_LEFT</orientation>!-->
+            <!--<orientation>Ti.UI.LANDSCAPE_RIGHT</orientation>!-->
+        </orientations>
+    </iphone>
+    <android xmlns:android="http://schemas.android.com/apk/res/android">
+        <manifest android:versionCode="2" android:versionName="1.1" package="com.twoeskimos.ReadingAssessment">
+            <application android:debuggable="false" android:theme="@style/Theme.NoActionBar">
+                <activity
+                    android:configChanges="keyboardHidden|orientation" android:name="org.appcelerator.titanium.TiActivity">
+                    <screens large="false" normal="false" small="true"/>
+                </activity>
+            </application>
+            <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+            <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE"/>
+            <!--     </application>-->
+            <!--<activity android:configChanges="keyboardHidden|orientation" android:installLocation="preferExternal" android:name="org.appcelerator.titanium.TiActivity" android:screenOrientation="landscape"/>-->
+        </manifest>
+    </android>
+    <modules>
+        <module platform="android">titutorial.audiorecorder</module>
+        <module platform="commonjs">ti.cloud</module>
+    </modules>
+    <property name="ti.android.bug2373.finishfalseroot" type="bool">true</property>
+    <property name="ti.deploytype">test</property>
+    <property name="appc-app-id" type="string">559a66b4e06455996609e3a0</property>
+    <property name="acs-authbase-url-development" type="string">https://secure-identity.cloud.appcelerator.com</property>
+    <property name="acs-base-url-development" type="string">https://api.cloud.appcelerator.com</property>
+    <property name="acs-oauth-secret-development" type="string">m7J364op3qvfUKIQESstJKPwN40TYEXF</property>
+    <property name="acs-oauth-key-development" type="string">Mj8ikDrdIJQ98VjkinIi5rgHLBHJSdpJ</property>
+    <property name="acs-api-key-development" type="string">un6cT7CfG8bq6SR8TgQgHJv5a1kKP5q0</property>
+    <property name="acs-username-development" type="string">appc_app_user_dev</property>
+    <property name="acs-password-development" type="string">9KyS3rApMrvNOxPoxa</property>
+    <property name="acs-authbase-url-production" type="string">https://secure-identity.cloud.appcelerator.com</property>
+    <property name="acs-base-url-production" type="string">https://api.cloud.appcelerator.com</property>
+    <property name="acs-oauth-secret-production" type="string">zMkjVPJOqqXInmwVcK77Pqyt9NBTJvrz</property>
+    <property name="acs-oauth-key-production" type="string">eFYFLttQJaR85bqOxy8QZeYLBt3gVN90</property>
+    <property name="acs-api-key-production" type="string">xsiPHhGsSZy1xbzF0VVxx43HTTTKq3Z2</property>
+    <property name="acs-username-production" type="string">appc_app_user</property>
+    <property name="acs-password-production" type="string">SPgeSjZzo6xhYV6c7E</property>
+    <property name="appc-org-id" type="string">100044490</property>
+    <property name="appc-creator-user-id" type="string">7a63632b-f74f-4949-879e-f0e7f7a2a9a8</property>
+</ti:app>

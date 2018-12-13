@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<string name="app_name">miscue</string>
+	<string name="Please_Login">Por favor, inicia sesión</string>
+	<string name="UserID">Usuario</string>
+	<string name="Password">Contraseña</string>
+	<string name="Please_Login">Por favor, inicia sesión</string>
+	<string name="Remember_me">Recordarme</string>
+      <string name="Login">login</string>
+	<string name="click_here_to_Register">haga clic aquí para registrarse</string>
+	<string name="Miscue_Analysis">análisis de errores</string>
+	<string name="Help">ayudar</string>
+	<string name="About_us">¿Quiénes somos?</string>
+</resources>

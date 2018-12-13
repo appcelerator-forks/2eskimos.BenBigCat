@@ -1,0 +1,14 @@
+1.9 SDK7
+ - Changed duplicate 'menuItem_key' parameter to 'menuItem_keyDuplicate'
+ - Changed duplicate 'token' parameter to 'tokenDuplicate'
+ - Removed audio recorder module
+ - Changed Titanium SDK version from 5.5.1 - 7.1.1
+
+10 December 2015			Changelog started
+sifter #10 	
+			strings.xml		
+							changed "Click here..." to "Tap here..."
+			LoginPage.js	
+							set background image
+							added version number
+							changed click here... to tap here...

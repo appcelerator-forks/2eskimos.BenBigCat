@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<string name="app_name">Reading Assessment</string>
+	<string name="Please_Login">Please Login</string>
+	<string name="UserID">UserID</string>
+	<string name="Password">Password</string>
+	<string name="Remember_me">Remember me</string>
+	<string name="Login">Login</string>
+	<string name="click_here_to_Register">Tap here to Register</string>
+	<string name="Miscue_Analysis">Miscue Analysis</string>
+	<string name="Help">Help</string>
+	<string name="About_us">About us</string>
+</resources>

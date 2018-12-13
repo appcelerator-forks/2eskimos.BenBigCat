@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<string name="app_name">走出陰影</string>
+	<string name="Please_Login">請登錄</string>
+	<string name="UserID">用戶名</string>
+	<string name="Password">密碼</string>
+	<string name="Remember_me">記住我</string>
+      <string name="Login">註冊</string>
+	<string name="click_here_to_Register">點擊這裡註冊</string>
+	<string name="Miscue_Analysis">走出陰影分析</string>
+	<string name="Help">幫助</string>
+	<string name="About_us">關於我們</string>
+</resources>

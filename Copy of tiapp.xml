@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ti:app xmlns:ti="http://ti.appcelerator.org">
+    <deployment-targets>
+        <target device="tizen">false</target>
+        <target device="mobileweb">false</target>
+        <target device="iphone">true</target>
+        <target device="ipad">true</target>
+        <target device="blackberry">false</target>
+        <target device="android">true</target>
+    </deployment-targets>
+    <sdk-version>5.5.1-GA</sdk-version>
+    <id>uk.co.harpercollins.iphone.CollinsBigCatReadingAssessment</id>
+    <name>Reading Assessment</name>
+    <version>1.77</version>
+    <publisher>2 Eskimos</publisher>
+    <url>http://www.2eskimos.com</url>
+    <!-- ^^ changed to match 2bap ^^ -->
+    <description>No description provided</description>
+    <copyright>2017 by 2eskimos</copyright>
+    <icon>appicon.png</icon>
+    <persistent-wifi>false</persistent-wifi>
+    <prerendered-icon>false</prerendered-icon>
+    <!-- ^^ changed to match 2bap ^^ -->
+    <statusbar-style>translucent_black</statusbar-style>
+    <!-- ^^ changed black to translucent_black. same as 2bap ^^ -->
+    <statusbar-hidden>true</statusbar-hidden>
+    <fullscreen>false</fullscreen>
+    <navbar-hidden>true</navbar-hidden>
+    <analytics>true</analytics>
+    <ios>
+        <plist>
+            <dict>
+                <key>UIApplicationExitsOnSuspend</key>
+                <true/>
+            </dict>
+            <!--Mal v177 removed UIbackgroundmodes audio -->
+            <key>NSAppTransportSecurity</key>
+            <dict>
+                <key>NSAllowsArbitraryLoads</key>
+                <true/>
+            </dict>
+            <dict>
+                <key>NSPhotoLibraryUsageDescription</key>
+                <string>This app can use your photos as evidence of learning if required.</string>
+                <key>NSMicrophoneUsageDescription</key>
+                <string>This app can record the reading session for you.</string>
+                <key>NSAppleMusicUsageDescription</key>
+                <string>This app can play music for you.</string>
+            </dict>
+        </plist>
+    </ios>
+    <property name="ti.ui.defaultunit" type="string">dp</property>
+    <!--<property name="ti.ui.defaultunit" type="string">dp</property>!-->
+    <iphone>
+        <orientations device="iphone">
+            <orientation>Ti.UI.PORTRAIT</orientation>
+            <!--<orientation>Ti.UI.LANDSCAPE_RIGHT</orientation>!-->
+            <!-- <orientation>Ti.UI.LANDSCAPE_LEFT</orientation>!-->
+        </orientations>
+        <orientations device="ipad">
+            <orientation>Ti.UI.PORTRAIT</orientation>
+            <!--<orientation>Ti.UI.UPSIDE_PORTRAIT</orientation>!-->
+            <!--<orientation>Ti.UI.LANDSCAPE_LEFT</orientation>!-->
+            <!--<orientation>Ti.UI.LANDSCAPE_RIGHT</orientation>!-->
+        </orientations>
+    </iphone>
+    <android xmlns:android="http://schemas.android.com/apk/res/android">
+        <manifest android:versionCode="2" android:versionName="1.2" package="com.twoeskimos.ReadingAssessment">
+            <application android:debuggable="false" android:theme="@style/Theme.NoActionBar">
+                <activity
+                    android:configChanges="keyboardHidden|orientation" android:name="org.appcelerator.titanium.TiActivity">
+                    <screens large="false" normal="false" small="true"/>
+                </activity>
+            </application>
+            <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+            <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE"/>
+            <!--     </application>-->
+            <!--<activity android:configChanges="keyboardHidden|orientation" android:installLocation="preferExternal" android:name="org.appcelerator.titanium.TiActivity" android:screenOrientation="landscape"/>-->
+        </manifest>
+    </android>
+    <modules>
+        <module platform="android">titutorial.audiorecorder</module>
+        <module platform="commonjs">ti.cloud</module>
+    </modules>
+    <property name="ti.android.bug2373.finishfalseroot" type="bool">true</property>
+    <property name="ti.deploytype">test</property>
+    <property name="appc-app-id" type="string">5bbb6548aecdd31364d05394</property>
+    <property name="acs-authbase-url-development" type="string">https://secure-identity.cloud.appcelerator.com</property>
+    <property name="acs-base-url-development" type="string">https://api.cloud.appcelerator.com</property>
+    <property name="acs-oauth-secret-development" type="string">MwLj7DK9QQmnJQp1dNVgXmgj48B6UejP</property>
+    <property name="acs-oauth-key-development" type="string">KZOrRxathr56N2fRd3dYTKxxDqoNsvBa</property>
+    <property name="acs-api-key-development" type="string">mde51R3Ltj9ghSzuHymR3MiqcnUMHqCb</property>
+    <property name="acs-username-development" type="string">appc_app_user_dev</property>
+    <property name="acs-password-development" type="string">xJiqAXTlN5d1QJc6WV</property>
+    <property name="acs-authbase-url-production" type="string">https://secure-identity.cloud.appcelerator.com</property>
+    <property name="acs-base-url-production" type="string">https://api.cloud.appcelerator.com</property>
+    <property name="acs-oauth-secret-production" type="string">wGSSqdmrxkqblS1S1sWn3BC8MtR96ioJ</property>
+    <property name="acs-oauth-key-production" type="string">RIebL9vDZTfZHurMsZhqOfYUp7HzrU8p</property>
+    <property name="acs-api-key-production" type="string">3YReV3PHA11duMK0X2sndt8Fo61NsShM</property>
+    <property name="acs-username-production" type="string">appc_app_user</property>
+    <property name="acs-password-production" type="string">ACgNR5zT8GExNkgRC3</property>
+    <property name="appc-org-id" type="string">100044540</property>
+    <property name="appc-creator-user-id" type="string">27bd3f78-e7ce-466a-bcc5-197edde8f893</property>
+    <guid>7977d44a-3722-498c-9ddd-3d5fd8b23efb</guid>
+</ti:app>
