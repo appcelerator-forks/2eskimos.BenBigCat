@@ -304,7 +304,15 @@ var r_styles = require('/MainMiscue/ui/styles');
    	    tvData = [];
 	    for (var i = 0;i < holddatavar.rowCount;i++) 
 	    {
-			var learnername = holddatavar.fieldByName('learnerName');	
+	    	Ti.API.info("holddatavar.typeof = " + holddatavar);
+	    	var MyNodeList = holddatavar.childNodes;
+	    	for(var i = 0; i < holddatavar.colCount; i++){
+            	Ti.API.info("----------BEN!!! Node " + i + " is called " + MyNodeList[i].nodeName);
+            }
+            
+	    	Ti.API.info("----------BEN!!!learnerForename = " + holddatavar.fieldByName('forename'));
+	    	
+			var learnername = holddatavar.fieldByName('learnerName');//holddatavar.fieldByName('learnerName');	
 			 	
 			//mal 175
 			var learnernamelabel  = learnername.replace("&quot;", "'");

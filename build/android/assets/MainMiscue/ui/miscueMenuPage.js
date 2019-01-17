@@ -737,7 +737,6 @@ var r_HomeScreen = require('/MainMiscue/ui/HomeScreen');
 //Function to recieve learner details from server and database integration
 function getGroupLearner(xmlSync,userName,token,menuItemKey,homeWind)
     {   
-        Ti.API.info("---------BEN!!! xmlSync = " + xmlSync); //TODO DELETE ME
    	
         // Check learner details is deleted from server or not
         // by default 'Deleted' = no.
@@ -749,9 +748,6 @@ function getGroupLearner(xmlSync,userName,token,menuItemKey,homeWind)
        var result = docData.getElementsByTagName("result").item(0).textContent;
        //var result = docData.getElementsByTagName("result").item(0).text;
        
-       Ti.API.info("---------BEN!!! responses = " + responses); //TODO DELETE ME
-       Ti.API.info("---------BEN!!! result.item(0).text = " + responses.item(0).text); //TODO DELETE ME
-       Ti.API.info("---------BEN!!! result.item(0).text = " + responses.item(0).textContent); //TODO DELETE ME
         
       if(result == 'REQUEST_OK')
       {
@@ -844,7 +840,6 @@ function getGroupLearner(xmlSync,userName,token,menuItemKey,homeWind)
     		//hideActivity();
             var error =  docData.getElementsByTagName("error");
             
-            Ti.API.info("------------------BEN!!! docData = " + docData);
             
             var MyNodeList = docData.childNodes;
             
@@ -861,15 +856,6 @@ function getGroupLearner(xmlSync,userName,token,menuItemKey,homeWind)
             for(var i = 0; i < MyNodeList.length; i++){
             	Ti.API.info("Node " + i + " has a value of " + MyNodeList[i].nodeValue);
             }
-            
-            
-            Ti.API.info("------------------BEN!!! docData = " + docData.length);
-            
-            Ti.API.info("------------------BEN!!! error = " + error);//(NodeList)
-            Ti.API.info("------------------BEN!!! error.length = " + error.length);
-            Ti.API.info("------------------BEN!!! error.item(0) = " + error.item(0));
-            
-            //Ti.API.info('------------------BEN!!! error.getElementsByTagName("message").item(0).text = ' + error.getElementsByTagName("message").item(0).text); 
             
             
         var message = error.item(0).getElementsByTagName("message").item(0).text;

@@ -19,7 +19,6 @@ var r_sessionBookPage = require('/MainMiscue/ui/sessionBookPage');
 //API request
 function createApi(url, strng, text1, text2, flag, modal, apiCount, menuItemKey, button_Id, audioFileName, fontcolour, backcolour, pagefontfamily, isPageName, tableView, sessionCount, fileName, loopEnds, submitSession) {
 	
-	Ti.API.info("------------------ BEN, url = " + url);//TODO delete me
 	var xmldata;
 	var loginReq = Ti.Network.createHTTPClient();
 	/*
@@ -31,7 +30,6 @@ function createApi(url, strng, text1, text2, flag, modal, apiCount, menuItemKey,
 
 	/* 2ERA -  URL */
 	url = Ti.App.Properties.getString("apiURL");
-	Ti.API.info("------------------ BEN, url was changed = " + url);//TODO delete me
 	//mal v177 - audio temp folder bug
 	//dont upload old broken audio
 	
@@ -146,7 +144,6 @@ function createApi(url, strng, text1, text2, flag, modal, apiCount, menuItemKey,
 		var param = {
 			"requestXML" : strng
 		};
-		Ti.API.info("--------------------- BEN, requestXML : strng. strng = " + strng);
 		loginReq.send(param);
 
 		// Ti.API.log("Book request api result is :: ", responses.toString());

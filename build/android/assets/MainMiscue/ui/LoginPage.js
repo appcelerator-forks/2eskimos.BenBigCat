@@ -478,7 +478,6 @@
                 	loginBackgroundImage.image  = "https://www.miscue.co.uk/iglooAPI/images/appimagesCOLV1/LOGIN_BG.png";
              
           }*/
-         Ti.API.info("----------BEN!!! Background is being set!"); //TODO Delete Me
       loginBackgroundImage.image  = "/images/V1.9/LOGIN_BG.png";
       var xCenterValue;
         
@@ -1214,7 +1213,6 @@ function orientionChangeMode(e) {
 	    xmlSync = xmlSync.replace(/'/g,'&apos;');
 	    xmlSync = xmlSync.replace(/'/g,'&quot;');
 	    
-	    Ti.API.info("---------------BEN!!! End of xmlSync = " + xmlSync.toString().substr(xmlSync.toString().length - 51, 50)); //TODO Delete this 
 	    
 	    var docData = Ti.XML.parseString(xmlSync);
         
@@ -1295,7 +1293,6 @@ function orientionChangeMode(e) {
                     //V1.9 SDK7 - Changed from 'text' to 'textContent'
                     //var backimage = apconf.item(i).getElementsByTagName("pagebackground").item(0).textContent;
                     //var backimage = apconf.item(i).getElementsByTagName("pagebackground").item(0).text;
-                    Ti.API.info("----------BEN!!! backimage = " + backimage);
                     
                     
                     //V1.9 SDK7 - Changed from 'text' to 'textContent'
@@ -1521,9 +1518,6 @@ function orientionChangeMode(e) {
             				case 'aboutus1':
             					Buttonicon = '/images/V1.9/about_us_button.png';
             					break;
-            				default:
-            					Ti.API.info("----------BEN!!! Menu key ''" + menu_Key + "'does not have an image!");
-            					break;
             			}
             			
             			if (Buttontype == 'webview')
@@ -1742,8 +1736,6 @@ function orientionChangeMode(e) {
         	 var responses = docData.getElementsByTagName("response");
       		  
       		 */
-      		Ti.API.info("-------------------- BEN!!! apiservice = " +  responses.item(0).getElementsByTagName("apiservice").item(0).textContent);
-      		Ti.API.info("-------------------- BEN!!! Font = " +  docData.getElementsByTagName("font").item(0).textContent);
       		
       		/*for(var i = 0; i < docData.getElementsByTagName("MenuItem").length; i++)
       		{

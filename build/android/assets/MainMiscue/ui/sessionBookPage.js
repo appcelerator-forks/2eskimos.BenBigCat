@@ -549,30 +549,7 @@ function createSavePendingMiscueSessionToServer (xmlSync,userId,sessionGuid,clos
         	grouploginrow.close();
             db.close();
             
-            
-            Ti.API.info("----------BEN!!! - xmlSync = " + xmlSync);//TODO Delete me
-            Ti.API.info("----------BEN!!! - xmlSync.toString() = " + xmlSync.toString());//TODO Delete me
-            
-            Ti.API.info("----------BEN!!! - docData = " + docData);//TODO Delete me
-            
-            //Ti.API.info("----------BEN!!! - docData.get = " + docData.get);
-            //Ti.API.info("----------BEN!!! - docData.toString() = " + docData.toString());
-            //Ti.API.info("----------BEN!!! - docData.valueOf() = " + docData.valueOf());
-            
         	var error =  docData.getElementsByTagName("error");
-        
-        	Ti.API.info("----------BEN!!! - error = " + error);//TODO Delete me
-        
-        
-        
-        	Ti.API.info("----------BEN!!! - error.length = " + error.length);//TODO Delete me
-        
-        
-        	//Ti.API.info("----------BEN!!! - error.toString() = " + error.toString());
-        	//Ti.API.info("----------BEN!!! - error.localName = " + error.item(0).localName);
-        	//Ti.API.info("----------BEN!!! - error.nodeName = " + error.item(0).nodeName);
-        	//Ti.API.info("----------BEN!!! - error.nodeValue = " + error.item(0).nodeValue);
-        	//Ti.API.info("----------BEN!!! - error.parentNode = " + error.item(0).parentNode);
         
 	        //V1.9 SDK7 - Changed text to textContent as text is deprecated
     	    var message = error.item(0).getElementsByTagName("message").item(0).textContent;
