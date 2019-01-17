@@ -302,15 +302,17 @@ var r_styles = require('/MainMiscue/ui/styles');
    		}	
    	
    	    tvData = [];
+   	    
+   	    Ti.API.info("----------BEN - holddatavar.typeof 1 = " + holddatavar);
+   	    Ti.API.info("----------BEN - holddatavar.rowCount = " + holddatavar.rowCount);
 	    for (var i = 0;i < holddatavar.rowCount;i++) 
 	    {
-	    	Ti.API.info("holddatavar.typeof = " + holddatavar);
-	    	var MyNodeList = holddatavar.childNodes;
-	    	for(var i = 0; i < holddatavar.colCount; i++){
-            	Ti.API.info("----------BEN!!! Node " + i + " is called " + MyNodeList[i].nodeName);
-            }
+	    	Ti.API.info("----------BEN Row " + i + " :");
+	    	for(var j = 0; j < holddatavar.fieldCount; j++)
+	   		{
+	   			Ti.API.info("----------Ben - Row " + i + " Field " + j + " = " + holddatavar.fieldName(j) + " = "+ holddatavar.field(j));	
+	   		}
             
-	    	Ti.API.info("----------BEN!!!learnerForename = " + holddatavar.fieldByName('forename'));
 	    	
 			var learnername = holddatavar.fieldByName('learnerName');//holddatavar.fieldByName('learnerName');	
 			 	
