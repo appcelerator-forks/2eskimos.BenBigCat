@@ -2,8 +2,8 @@
 -dontobfuscate
 -dontpreverify
 -dontwarn **
--libraryjars D:\android-sdk\build-tools\28.0.3\lib\shrinkedAndroid.jar
--injars C:\Users\ben.2ESKIMOS\Documents\Appcelerator_Studio_Workspace\BenBigCat\build\android\bin\classes(!META-INF/**)
+-libraryjars D:\android-sdk-win\build-tools\28.0.3\lib\shrinkedAndroid.jar
+-injars C:\Users\ben\Documents\Appcelerator_Studio_Workspace\BenBigCat\build\android\bin\classes(!META-INF/**)
 -injars C:\ProgramData\Titanium\mobilesdk\win32\7.0.2.GA\android\lib\titanium-verify.jar(!META-INF/**)
 -injars C:\ProgramData\Titanium\mobilesdk\win32\7.0.2.GA\android\kroll-v8.jar(!META-INF/**)
 -injars C:\ProgramData\Titanium\mobilesdk\win32\7.0.2.GA\android\java_websocket.jar(!META-INF/**)
@@ -45,4 +45,4 @@
 -injars C:\ProgramData\Titanium\mobilesdk\win32\7.0.2.GA\android\modules\titanium-platform.jar(!META-INF/**)
 -injars C:\ProgramData\Titanium\mobilesdk\win32\7.0.2.GA\android\modules\titanium-utils.jar(!META-INF/**)
 -injars C:\ProgramData\Titanium\mobilesdk\win32\7.0.2.GA\android\modules\titanium-gesture.jar(!META-INF/**)
--outjars C:\Users\ben.2ESKIMOS\Documents\Appcelerator_Studio_Workspace\BenBigCat\build\android\mainDexClasses.jar
+-outjars C:\Users\ben\Documents\Appcelerator_Studio_Workspace\BenBigCat\build\android\mainDexClasses.jar
