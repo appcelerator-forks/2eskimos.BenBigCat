@@ -1271,7 +1271,16 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	    //Checking audio file is exists or not for playback(Resume and search session)
 	    var db = Titanium.Database.open('Miscue');
 	    var audioFileExistCheckRow =  db.execute("SELECT * FROM MiscueSession  WHERE userId = ? AND sessionGuid = ? AND sessionStatus != ?",userId,sessionGuid,'DELETED');
+	    Ti.API.info("---------- BEN - SELECT * FROM MiscueSession  WHERE userId = " + userId + " AND sessionGuid = " + sessionGuid + " AND sessionStatus != DELETED");
+	    Ti.API.info("---------- BEN - " + audioFileExistCheckRow.count + " row(s) were returned");
+	    
+	    for(var i = 0; i < audioFileExistCheckRow.fieldCount; i++)
+	    {
+	    	Ti.API.info("----------Ben - " + audioFileExistCheckRow.fieldName(i) + " = "+ audioFileExistCheckRow.field(i));
+	    }
+	    
 	    var file = audioFileExistCheckRow.fieldByName('recordedAudioFilename');
+	    Ti.API.info("---------- BEN!!! 1275 audioFile = " + file);
 	    if(file != 'null')
 	    {
 	    	isRecordStarted = 'true';
@@ -1286,6 +1295,7 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	   	    	file = Titanium.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,file);
 	            if (file.exists()==false)
 	            {
+	            	Ti.API.info("---------- BEN!!! audioFile was lost!");
 	            	//v177 mal
 	               	//if the file is lost (from the old temporary folder bug), then remove it from the db
 	               	alert('The audio file could not be loaded');
@@ -1296,12 +1306,14 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	            else
 	            {
 	            	sound.url = file;
+	            	Ti.API.info("---------- BEN!!! audioFile was found! Url = " + sound.url);
 	            }
 	        }
 	        else
 	        {
-	        	var audioDir = Titanium.Filesystem.getFile(Titanium.Filesystem.externalStorageDirectory, "Miscue");
-	            file = Ti.Filesystem.getFile(audioDir.resolve(), file);
+	        	//V1.9 SDK7 - Changed to applicationDataDirectory
+	        	//var audioDir = Titanium.Filesystem.getFile(Titanium.Filesystem.externalStorageDirectory, "Miscue");
+	            file = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, file);
 	            sound.url = file.nativePath;
 	        }
 	
@@ -1313,6 +1325,10 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	         	playImage.image = '/images/phase5/PLAY.png';
 	        }
 	
+		}
+		else
+		{
+			Ti.API.info("---------- BEN!!! audioFile was null!");
 		}
 	    audioFileExistCheckRow.close();
 	    db.close();
@@ -1516,6 +1532,7 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	        	
 	            if (recordImage.image == '/images/phase5/RECORD.png')
 	            {
+	            	Ti.API.info("---------- BEN - I am starting the recording...");
 					interval = setInterval(flashRecord, 500);
 	                playView.visible = false;
 	                var recordCount =   sessionGuid.substr(sessionGuid.length - 12,sessionGuid.length);
@@ -1570,7 +1587,8 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	                isRecordStarted = 'true';
 				}
 	            else
-	            {                	
+	            {               
+	            	Ti.API.info("---------- BEN - I am stopping & saving the recording..."); 	
 	            	clearInterval(interval);
 	                interval = null;
 	                recordView.visible = true;
@@ -1580,11 +1598,28 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	                 
 	                //V1.9 SDK7 - Added new stop function
 	                file = newAudioRecorder.stop();
-	                    
+	                
+	                Ti.API.info("---------- BEN - file = " + file);
+	                Ti.API.info("---------- BEN - file.nativePath = " + file.nativePath);
+	                
+	                var temp = file.nativePath.split("/");
+	                var tempFileName = temp[temp.length - 1];
+	                
+	                Ti.API.info("---------- BEN - Ti.Filesystem.applicationCacheDirectory = " + Ti.Filesystem.applicationCacheDirectory);
+	                Ti.API.info("---------- BEN - tempFileName = " + tempFileName);
+	                
+	                var tempAudioFile = Ti.Filesystem.getFile(Ti.Filesystem.applicationCacheDirectory, tempFileName);
+	                
+	                var newFileDirectory = Ti.Filesystem.applicationDataDirectory + "/" + tempFileName;
+	                Ti.API.info("---------- BEN - Attempting to move audio file from tempoary directory to new directory = " + newFileDirectory);
+	                tempAudioFile.move(newFileDirectory);
+	                Ti.API.info("---------- BEN - file was moved!");
+	                
 	                //V1.9 SDK7 new implementation of audioPlayer
 	                sound = audioPlayer = Ti.Media.createAudioPlayer(
 	                {
-	    				url: file.nativePath
+	    				//url: file.nativePath
+	    				url: newFileDirectory
 	  				});
 	                    
 	                recordImage.image = '/images/phase5/RECORD.png';
@@ -1787,9 +1822,74 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 		        incount--;
 		    }
 		});
+		
+		function checkDevicePermissions()
+		{
+            // also seems to check storage, even though its not explicitly asked for, and not flagged as required anywhere??
+			
+			Ti.API.info("----------BEN!!! Checking device permissions");
+			
+			if(Ti.Filesystem.hasStoragePermissions())
+			{
+				Ti.API.info("----------BEN!!! Has storage permissions...");
+			}
+			else
+			{
+				Ti.API.info("----------BEN!!! NOT have storage permissions...");
+			}
+			
+			
+            if (Ti.Media.hasCameraPermissions())
+            {
+                // I can access the camera!
+                Ti.API.info("----------BEN!!! I already have access to storage!");
+				return true;
+            }
+            else
+			{
+				Ti.API.info("----------BEN!!! I cannot access the storage, attempting to get access...");
+				try
+				{
+					
+					
+					Ti.API.info("----------BEN!!! Try started...");
+	                Ti.Media.requestCameraPermissions(function(e) 
+					{
+						Ti.API.info("----------BEN!!! Permission requested...");
+						
+	                    if (e.success) 
+	                    {
+	                    	// permissions granted
+	                    	Ti.API.info("----------BEN!!! I managed to get permission to storage.");
+							return true;
+	                    }
+	                    else
+	                    {
+	                        // user has denied access to the camera
+							
+	                        //_self.messageBox('I cannot access the camera, please check device Settings.');
+	                        
+							Ti.API.info("----------BEN!!! I cannot access the storage, please check device Settings.");
+							
+	                    	return false;
+	                	}
+	                	
+	                	Ti.API.info("----------BEN!!! End of permission request...");
+	            	});
+	            	Ti.API.info("----------BEN!!! End of try...");
+	            }
+	            catch(e)
+	            {
+	            	Ti.API.info("----------BEN!!! There was an error whilst trying to get access to the storage! Error: " + e);
+	            }
+			}
+       	}
+       	
 	    //Creating function for saving the miscue session on back/save button click
 	    function saveMiscueSessionOnBackButton()
 	    {
+	    	checkDevicePermissions();
+	    	
 	    	if(singletapwin.visible == true)
 	        {
 	        	miscueMenuCloseView.visible = false;

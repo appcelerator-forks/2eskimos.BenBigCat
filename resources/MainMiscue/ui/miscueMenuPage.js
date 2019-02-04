@@ -317,7 +317,7 @@ var r_HomeScreen = require('/MainMiscue/ui/HomeScreen');
                 layout: 'horizontal',
                  height:tableView.height/2,
                 backgroundColor:'transparent',
-                selectedBackgroundColor:"transparent",
+                backgroundSelectedColor:"transparent", //V1.9 SDK7 - Changed selectedBackgroundColor to backgroundSelectedColor as selectedBackgroundColor is deprecated
                 separatorColor:'white'
             });
          

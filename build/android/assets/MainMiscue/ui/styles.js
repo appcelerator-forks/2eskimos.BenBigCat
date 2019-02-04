@@ -93,8 +93,8 @@ var r_miscue = require('/MainMiscue/miscue.js');
 		TableViewRow: {
 			//backgroundImage:'images/tweet_bg.png',
 			//1.9 SDK7 - Added r_miscue as tt is undefined
-			//selectedBackgroundColor: tt.ui.theme.darkBlue,
-			selectedBackgroundColor: r_miscue.tt.ui.theme.darkBlue, // it's currently inconsistent x-platform
+			//backgroundSelectedColor: tt.ui.theme.darkBlue, //V1.9 SDK7 - Changed selectedBackgroundColor to backgroundSelectedColor as selectedBackgroundColor is deprecated
+			backgroundSelectedColor: r_miscue.tt.ui.theme.darkBlue, // it's currently inconsistent x-platform //V1.9 SDK7 - Changed selectedBackgroundColor to backgroundSelectedColor as selectedBackgroundColor is deprecated
 			//1.9 SDK7 - Added r_miscue as tt is undefined
 			//backgroundSelectedColor: tt.ui.theme.darkBlue,
 			backgroundSelectedColor: r_miscue.tt.ui.theme.darkBlue,

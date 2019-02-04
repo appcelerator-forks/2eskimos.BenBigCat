@@ -737,7 +737,7 @@ var r_Apifile = require('/MainMiscue/ui/Apifile');
 		     className : 'row',
 			height:row_height,
 			backgroundColor:'transparent',
-			selectedBackgroundColor:'transparent',
+			backgroundSelectedColor:'transparent', //V1.9 SDK7 - Changed selectedBackgroundColor to backgroundSelectedColor as selectedBackgroundColor is deprecated
 			objName : 'row',
 			touchEnabled: true,
 			id:sessionGuid,
@@ -1270,7 +1270,7 @@ var r_Apifile = require('/MainMiscue/ui/Apifile');
 		var row = Ti.UI.createTableViewRow(r_miscue.tt.combine(r_styles.$$.TableViewRow,{
 			height:row_height,
 			backgroundColor:'transparent',
-			selectedBackgroundColor:'transparent',
+			backgroundSelectedColor:'transparent', //V1.9 SDK7 - Changed selectedBackgroundColor to backgroundSelectedColor as selectedBackgroundColor is deprecated
 			objName : 'row',
 			touchEnabled: true,
 			id:sessionGuid,

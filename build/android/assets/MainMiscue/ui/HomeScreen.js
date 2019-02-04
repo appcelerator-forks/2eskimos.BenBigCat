@@ -453,7 +453,7 @@ var myUserId;
 					layout : 'horizontal',
 					height : tableView.height / 2,
 					backgroundColor : 'transparent',
-					selectedBackgroundColor : "transparent",
+					backgroundSelectedColor : "transparent", //V1.9 SDK7 - Changed selectedBackgroundColor to backgroundSelectedColor as selectedBackgroundColor is deprecated
 					separatorColor : 'transparent',
 
 				});
@@ -1112,10 +1112,11 @@ function createMiscueXmlData(sessionGuid, userId) {
 //V1.9 SDK7 - Added exports
 exports.createMiscueXmlData = createMiscueXmlData;
 
-function createSaveMiscueSessionToServer(userId, sessionGuid, token, sessionWindow, isSessionBookPage, file, sliderValue) {
+function createSaveMiscueSessionToServer(userId, sessionGuid, token, sessionWindow, isSessionBookPage, file, sliderValue) 
+{
 	Ti.API.info('slider value got to save miscue sesison'+sliderValue);
 	var cnt = 0,
-	    flag = 7;
+	flag = 7;
 	var sessionGUID = new Array();
 	var sessionDate = new Array();
 	var miscuesessionDate = new Array();
@@ -1136,15 +1137,21 @@ function createSaveMiscueSessionToServer(userId, sessionGuid, token, sessionWind
 	var rowCount = miscueSaveSessionToServerRow.rowCount;
 	Ti.API.info('row count at save session '+rowCount);
 	// -Lee added a Try.. block here, to try to stop ugly code crash
-	try {
-		if (rowCount > 0) {
-			while (miscueSaveSessionToServerRow.isValidRow()) {
+	try 
+	{
+		if (rowCount > 0) 
+		{
+			while (miscueSaveSessionToServerRow.isValidRow()) 
+			{
 				sessionStatus[cnt] = miscueSaveSessionToServerRow.fieldByName('sessionStatus');
 				sessionGUID[cnt] = miscueSaveSessionToServerRow.fieldByName('sessionGuid');
 
-				if (sessionStatus[cnt] == 'CREATED') {
+				if (sessionStatus[cnt] == 'CREATED') 
+				{
 					sessionDate[cnt] = miscueSaveSessionToServerRow.fieldByName('sessiondate');
-				} else if (sessionStatus[cnt] == 'EDITED' || sessionStatus[cnt] == 'DELETED') {
+				} 
+				else if (sessionStatus[cnt] == 'EDITED' || sessionStatus[cnt] == 'DELETED') 
+				{
 					sessionDate[cnt] = miscueSaveSessionToServerRow.fieldByName('lastModifiedDate');
 				}
 				learnerGUID[cnt] = miscueSaveSessionToServerRow.fieldByName('learnerGuid');
@@ -1159,12 +1166,15 @@ function createSaveMiscueSessionToServer(userId, sessionGuid, token, sessionWind
 				miscueSaveSessionToServerRow.next();
 			}
 			db.close();
-			for (var x = 0; x < rowCount; x++) {
+			for (var x = 0; x < rowCount; x++) 
+			{
 				//saveMiscueXML = '<request><requesttype>SAVEMISCUE</requesttype><status>' + sessionStatus[x] + '</status><accesstoken>' + token + '</accesstoken>' + '<sessionGUID>' + sessionGUID[x] + '</sessionGUID>' + '<sessionDate>' + sessionDate + '</sessionDate><learnerGUID>' + learnerGUID[x] + '</learnerGUID><bookGUID>' + bookGUID[x] + '</bookGUID><notes>' + sessionNotes[x] + '</notes><miscues>' + miscues[x] + '</miscues> </request>';
 				saveMiscueXML = '<request><requesttype>SAVEMISCUE</requesttype><status>' + sessionStatus[x] + '</status><accesstoken>' + token + '</accesstoken>' + '<sessionGUID>' + sessionGUID[x] + '</sessionGUID>' + '<sessionDate>' + sessionDate + '</sessionDate><learnerGUID>' + learnerGUID[x] + '</learnerGUID><bookGUID>' + bookGUID[x] + '</bookGUID><notes>' + sessionNotes[x] + '</notes><sliderValue>' +sliderValue+'</sliderValue><miscues>' + miscues[x] + '</miscues> </request>';
 				
 				//V1.9 SDK7 - Added r_Apifile
+				Ti.API.info("---------- BEN - doing createApi");
 				r_Apifile.createApi(base_URL, saveMiscueXML, loginUserName, userId, flag, sessionWindow, sessionGuid, isSessionBookPage, token, file);
+				Ti.API.info("---------- BEN - TEST COMPLETE");
 				//createApi(base_URL, saveMiscueXML, loginUserName, userId, flag, sessionWindow, sessionGuid, isSessionBookPage, token, file);
 			}
 		} // if

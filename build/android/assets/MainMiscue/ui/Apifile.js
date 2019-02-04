@@ -47,10 +47,11 @@ function createApi(url, strng, text1, text2, flag, modal, apiCount, menuItemKey,
 		}   
 	}
 	
-	
+	Ti.API.info("---------- BEN - audioFileName = " + audioFileName);
 	
 	if (flag == 7) 
 	{
+		Ti.API.info("---------- BEN - flag7");
 		if (audioFileName != 'null') 
 		{
 			if (Ti.Platform.osname != 'android') 
@@ -60,8 +61,27 @@ function createApi(url, strng, text1, text2, flag, modal, apiCount, menuItemKey,
 			} 
 			else 
 			{
+				Ti.API.info("---------- BEN - Attempting to change android audioFileName...");
+				
+				//V1.9 SDK7 - This returns null
+				/*
 				var audioDir = Titanium.Filesystem.getFile(Titanium.Filesystem.externalStorageDirectory, "Miscue");
 				audioFileName = Ti.Filesystem.getFile(audioDir.resolve(), audioFileName);
+				*/
+				
+				audioFileName = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, audioFileName);
+				
+				Ti.API.info("---------- BEN - audioDir = " + Ti.Filesystem.applicationDataDirectory);
+				Ti.API.info("---------- BEN - audioFileName changed to = " + audioFileName);
+				
+				Ti.API.info("---------- BEN - Attempting to read audioFileName...");
+				
+				var contents = audioFileName.read();
+				
+				Ti.API.info("---------- BEN - Read audioFileName successfully");
+				
+				Ti.API.info("---------- BEN - audioFileName changed to (2) = " + contents.text);
+				
 			}
 			var var1 = 'requestXML';
 			var name = 'myFile';
@@ -97,6 +117,7 @@ function createApi(url, strng, text1, text2, flag, modal, apiCount, menuItemKey,
 	} 
 	else if (flag == 5) 
 	{
+		Ti.API.info("---------- BEN - flag 5");
 		if (fileName != 'null') 
 		{
 			if (Ti.Platform.osname != 'android') 
