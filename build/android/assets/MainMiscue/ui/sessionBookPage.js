@@ -401,6 +401,7 @@ var screenRes = r_loadingScreen.backgroundImageHeightWidthPxToDp();
            var session_Date = new Date();
            session_Date = session_Date.toISOString();
            //V1.9 SDK7 - Added r_Miscuedb
+           Ti.API.info("---------- BEN - insertMiscueSession called 1 (from sessionBookPage). recordedFileName parameter is hardcoded as 'null'!");
            r_Miscuedb.insertMiscueSession (session_Guid,user_Id,msicue_DataXml,session_Date,book_GUID,session_Status,learnerGuid,accuaracy_Value,notesTemplateValue,lastmodified_Date,lastSavedServer_Date,isLastEdited_Session,isSession_Modified,'null',createDayMonthYear(), createTime());
         //insertMiscueSession (session_Guid,user_Id,msicue_DataXml,session_Date,book_GUID,session_Status,learnerGuid,accuaracy_Value,notesTemplateValue,lastmodified_Date,lastSavedServer_Date,isLastEdited_Session,isSession_Modified,'null',createDayMonthYear(), createTime());
         clickCount++;

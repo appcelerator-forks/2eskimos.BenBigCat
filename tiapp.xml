@@ -12,7 +12,7 @@
     <id>uk.co.harpercollins.iphone.CollinsBigCatReadingAssessment</id>
     <!--<id>Y93CKNV92X.com.twoeskimos.readingassessment</id>-->
     <name>Reading Assessment</name>
-    <version>1.9.12</version>
+    <version>1.9.13</version>
     <publisher>2 Eskimos</publisher>
     <url>http://www.2eskimos.com</url>
     <!-- ^^ changed to match 2bap ^^ -->
@@ -70,8 +70,8 @@
         <manifest android:versionCode="3" android:versionName="1.3" package="uk.co.harpercollins.iphone.CollinsBigCatReadingAssessment">
             <uses-permission android:name="android.permission.RECORD_AUDIO"/>
             <!-- V1.9 SDK7 - Added maxSdkVersion attributes because permission is not needed to access application-sepific directories on external storage as of Android 4.4 KitKat (API level 19) -->
-            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18" />
-            <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+            <uses-permission android:maxSdkVersion="18" android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+            <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE"/>
             <!-- SDK26 node -->
             <!--     </application>-->
             <!--<activity android:configChanges="keyboardHidden|orientation" android:installLocation="preferExternal" android:name="org.appcelerator.titanium.TiActivity" android:screenOrientation="landscape"/>-->

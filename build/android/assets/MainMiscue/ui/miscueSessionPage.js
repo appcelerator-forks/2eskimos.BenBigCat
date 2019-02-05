@@ -1403,7 +1403,7 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	
 	             	//Updating recorded audio file
 	            	var db = Titanium.Database.open('Miscue');
-	            	Ti.API.info("---------- BEN - recordedFileName is being set on the database!!! recordedFileName = '" + recordedFileName + "'");
+	            	Ti.API.info("---------- BEN - recordedAudioFilename is being set on the database!!! recordedFileName = '" + recordedFileName + "'");
 	            	db.execute('UPDATE MiscueSession SET recordedAudioFilename =?, lastModifiedDate=?,isSessionModified = ?,isLastEditedSession = ? WHERE userId=? AND sessionGuid = ?',recordedFileName,createLastModifiedDate(),'true','true',userId,sessionGuid);
 	            	db.close();
 	
@@ -1601,21 +1601,20 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	                //V1.9 SDK7 - Added new stop function
 	                file = newAudioRecorder.stop();
 	                
-	                Ti.API.info("---------- BEN - file = " + file);
-	                Ti.API.info("---------- BEN - file.nativePath = " + file.nativePath);
+	                Ti.API.info("---------- BEN - The recording has been saved to the cache: " + file.nativePath);
 	                
 	                var temp = file.nativePath.split("/");
 	                var tempFileName = temp[temp.length - 1];
 	                
-	                Ti.API.info("---------- BEN - Ti.Filesystem.applicationCacheDirectory = " + Ti.Filesystem.applicationCacheDirectory);
-	                Ti.API.info("---------- BEN - tempFileName = " + tempFileName);
+	                //Ti.API.info("---------- BEN - Ti.Filesystem.applicationCacheDirectory = " + Ti.Filesystem.applicationCacheDirectory);
+	                Ti.API.info("---------- BEN - The audio file itself is called = " + tempFileName);
 	                
 	                var tempAudioFile = Ti.Filesystem.getFile(Ti.Filesystem.applicationCacheDirectory, tempFileName);
 	                
 	                var newFileDirectory = Ti.Filesystem.applicationDataDirectory + "/" + tempFileName;
-	                Ti.API.info("---------- BEN - Attempting to move audio file from tempoary directory to new directory = " + newFileDirectory);
+	                Ti.API.info("---------- BEN - Attempting to move audio file from the cache to the application data directory. The new directroy will be: " + newFileDirectory);
 	                tempAudioFile.move(newFileDirectory);
-	                Ti.API.info("---------- BEN - file was moved!");
+	                Ti.API.info("---------- BEN - file was successfully moved from the cache to the application data directory!");
 	                
 	                //V1.9 SDK7 new implementation of audioPlayer
 	                sound = audioPlayer = Ti.Media.createAudioPlayer(
@@ -1755,7 +1754,7 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	                file.deleteFile();
 	                playView.visible = false;
 	                file = 'null';
-	                Ti.API.info("---------- BEN - recordedFileName is being set on the database (2)!!! recordedFileName = '" + recordedFileName + "'");
+	                Ti.API.info("---------- BEN - recordedAudioFilename is being set on the database (2)!!! Hardcoded to = null");
 	                db.execute('UPDATE MiscueSession SET recordedAudioFilename =?, lastModifiedDate=?,isSessionModified = ?,isLastEditedSession = ? WHERE userId=? AND sessionGuid = ?','null',createLastModifiedDate(),'true','true',userId,sessionGuid);
 	                db.close();
 	                playImage.image  = '/images/blurPlay.png';
@@ -1943,12 +1942,12 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	                var localSliderValueString = accuracyLabel.text;
 	                Ti.API.info('localSliderValueString : '+localSliderValueString);
 	                Ti.API.info('insert/update single value at save'+localSliderValueString+'with bookGUID='+bookGuid+' and user id '+userId+ ' learner guid '+learnerguid);
-	                Ti.API.info("---------- BEN - First, I am updating the local database");
+	                Ti.API.info("---------- BEN - First, I am updating the 'sliderValue' (understanding) for this session on the local database.");
 	                var db = Titanium.Database.open('Miscue');
 	                db.execute('UPDATE MiscueSession SET sliderValue = ? WHERE bookGUID = ? AND userId = ? AND learnerGuid = ?', localSliderValueString, bookGuid, userId,learnerguid);
 	     			db.close();
 	     			//V1.9 SDK7 - Added r_HomeScreen
-	     			Ti.API.info("---------- BEN - Then I am calling HomeScreen.createSubmitMiscueSession which also creates me on the local database");
+	     			Ti.API.info("---------- BEN - Secondly, I am calling HomeScreen.createSubmitMiscueSession which finishes off creating me on the local database. A file is sent to this function. The type is = " + file + " and the directory is = " + file.nativePath);
 	     			r_HomeScreen.createSubmitMiscueSession (userId,sessionGuid,token,sessionWin,isSessionBookPage,token, file,accuracyLabel.text);
 	                //createSubmitMiscueSession (userId,sessionGuid,token,sessionWin,isSessionBookPage,token, file,accuracyLabel.text);//Calling function from home.js
 	                if(!Ti.Network.online)

@@ -1027,7 +1027,7 @@ function createActivityIndicator(message) {
 function createSubmitMiscueSession(userId, sessionGuid, token, sessionWindow, isSessionBookPage, tokenDuplicate, file, sliderValue) {
 	Ti.API.info('slider value got here '+sliderValue);
 	Ti.API.info("---------- BEN - Creating session on local (I think) database. token = '" + token + "' & tokenDuplicate = '" + tokenDuplicate + "'");
-	Ti.API.info("---------- BEN - file.nativePath = '" + file.nativePath + "'");
+	Ti.API.info("---------- BEN - file = '" + file + "'");
 	var newSessionStatus,
 	    miscueDataXml;
 	var db = Titanium.Database.open('Miscue');
@@ -1041,16 +1041,32 @@ function createSubmitMiscueSession(userId, sessionGuid, token, sessionWindow, is
 		var bookguid = checkEditSessionRow.fieldByName('bookGUID');
 		var sliderValueLocal = checkEditSessionRow.fieldByName('sliderValue');
 		var learnerGuid = checkEditSessionRow.fieldByName('learnerGuid');
+		
+		Ti.API.info("---------- BEN - Doing your fix and adding recordedAudioFilename to the database.");
+		
+		//"appdata-private:///"
+		//"file:///data/data/uk.co.harpercollins.iphone.CollinsBigCatReadingAssessment/app_appdata/"
+		
+		db.execute('UPDATE MiscueSession SET recordedAudioFilename = ? WHERE sessionGuid = ? AND userId = ? AND learnerGuid = ?', file, sessionGuid, userId, learnerGuid);
+		
+		
 		Ti.API.info('slider value got from db at submit '+sliderValueLocal+' :bookguid '+bookguid+ ' user id '+userId+ ' learner guid'+learnerGuid);
-		if (isModified == 'true' || sessionstatus == 'DRAFT' || lastSavedToServer == 'null' || (modifiedDate > lastSavedToServer)) {
-			if (sessionstatus == 'DRAFT') {
+		if (isModified == 'true' || sessionstatus == 'DRAFT' || lastSavedToServer == 'null' || (modifiedDate > lastSavedToServer)) 
+		{
+			if (sessionstatus == 'DRAFT') 
+			{
 				newSessionStatus = 'CREATED';
-			} else if (sessionstatus == 'CREATED') {
+			} 
+			else if (sessionstatus == 'CREATED') 
+			{
 				newSessionStatus = 'CREATED';
-				if (lastSavedToServer != 'null') {
+				if (lastSavedToServer != 'null') 
+				{
 					newSessionStatus = 'EDITED';
 				}
-			} else if (sessionstatus == 'EDITED') {
+			} 
+			else if (sessionstatus == 'EDITED') 
+			{
 				newSessionStatus = 'EDITED';
 			}
 			db.execute('UPDATE MiscueSession SET isLastEditedSession = ? WHERE userId = ?', 'false', userId);
@@ -1060,7 +1076,8 @@ function createSubmitMiscueSession(userId, sessionGuid, token, sessionWindow, is
 			db.execute('UPDATE MiscueSession SET isSessionModified = ?,isLastEditedSession = ?,lastModifiedDate = ?,sessionStatus = ?,sliderValue = ? WHERE sessionGuid = ? AND userId = ? AND learnerGuid = ?', 'false', 'true', r_sessionBookPage.createDate(), newSessionStatus, sliderValueLocal,sessionGuid, userId, learnerGuid);
 			//db.execute('UPDATE MiscueSession SET isSessionModified = ?,isLastEditedSession = ?,lastModifiedDate = ?,sessionStatus = ?,sliderValue = ? WHERE sessionGuid = ? AND userId = ? AND learnerGuid = ?', 'false', 'true', createDate(), newSessionStatus, sliderValueLocal,sessionGuid, userId, learnerGuid);
 			db.close();
-			if (Ti.Network.online) {
+			if (Ti.Network.online) 
+			{
 				createSaveMiscueSessionToServer(userId, sessionGuid, token, sessionWindow, isSessionBookPage, file, sliderValue);
 			}
 		}

@@ -61,7 +61,7 @@ function createApi(url, strng, text1, text2, flag, modal, apiCount, menuItemKey,
 			} 
 			else 
 			{
-				Ti.API.info("---------- BEN - Attempting to change android audioFileName...");
+				
 				
 				//V1.9 SDK7 - This returns null
 				/*
@@ -69,14 +69,19 @@ function createApi(url, strng, text1, text2, flag, modal, apiCount, menuItemKey,
 				audioFileName = Ti.Filesystem.getFile(audioDir.resolve(), audioFileName);
 				*/
 				
+				Ti.API.info("---------- BEN - Generaing the directory where I hope to find the audio file...");
+				
 				audioFileName = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, audioFileName);
 				
-				Ti.API.info("---------- BEN - audioDir = " + Ti.Filesystem.applicationDataDirectory);
-				Ti.API.info("---------- BEN - audioFileName changed to = " + audioFileName);
+				//Ti.API.info("---------- BEN - audioDir = " + Ti.Filesystem.applicationDataDirectory);
+				//Ti.API.info("---------- BEN - audioFileName changed to = " + audioFileName);
 				
-				Ti.API.info("---------- BEN - audioFileName changed to (2) = " + audioFileName.nativePath);
+				Ti.API.info("---------- BEN - The directory is = " + audioFileName.nativePath);
 				
 			}
+			
+			Ti.API.info("---------- BEN - Now an XML request is made...");
+			
 			var var1 = 'requestXML';
 			var name = 'myFile';
 			var filename = 'b.b64';
@@ -88,11 +93,11 @@ function createApi(url, strng, text1, text2, flag, modal, apiCount, menuItemKey,
 			header += " filename=\"" + filename + "\"\r\n";
 			header += "Content-Type: application/octet-stream\r\n\r\n";
 			var content = audioFileName.read();
-			Ti.API.info("---------- BEN - content = " + content);
+			//Ti.API.info("---------- BEN - content = " + content);
 			content = Ti.Utils.base64encode(content);
-			Ti.API.info("---------- BEN - content 2 = " + content);
+			//Ti.API.info("---------- BEN - content 2 = " + content);
 			var fullContent = header + content + "\r\n--" + boundary;
-			Ti.API.info("---------- BEN - fullContent = " + fullContent);
+			//Ti.API.info("---------- BEN - fullContent = " + fullContent);
 			loginReq.open("POST", url);
 
 			loginReq.setRequestHeader('enctype', 'multipart/form-data');
