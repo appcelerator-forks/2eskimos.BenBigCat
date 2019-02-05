@@ -1272,7 +1272,7 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	    var db = Titanium.Database.open('Miscue');
 	    var audioFileExistCheckRow =  db.execute("SELECT * FROM MiscueSession  WHERE userId = ? AND sessionGuid = ? AND sessionStatus != ?",userId,sessionGuid,'DELETED');
 	    Ti.API.info("---------- BEN - SELECT * FROM MiscueSession  WHERE userId = " + userId + " AND sessionGuid = " + sessionGuid + " AND sessionStatus != DELETED");
-	    Ti.API.info("---------- BEN - " + audioFileExistCheckRow.count + "row(s) were returned");
+	    Ti.API.info("---------- BEN - " + audioFileExistCheckRow.count + " row(s) were returned");
 	    
 	    for(var i = 0; i < audioFileExistCheckRow.fieldCount; i++)
 	    {
@@ -1295,10 +1295,11 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	   	    	file = Titanium.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,file);
 	            if (file.exists()==false)
 	            {
-	            	Ti.API.info("---------- BEN!!! audioFile was lost!");
+	            	Ti.API.info("---------- BEN!!! audioFile was lost! recordedAudioFilename will be set to null in the database!");
 	            	//v177 mal
 	               	//if the file is lost (from the old temporary folder bug), then remove it from the db
 	               	alert('The audio file could not be loaded');
+	               	
 	               	db.execute("UPDATE MiscueSession set recordedAudioFilename='null'  WHERE userId = ? AND sessionGuid = ? AND sessionStatus != ?",userId,sessionGuid,'DELETED');
 	
 	               	file='null';
@@ -1402,6 +1403,7 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	
 	             	//Updating recorded audio file
 	            	var db = Titanium.Database.open('Miscue');
+	            	Ti.API.info("---------- BEN - recordedFileName is being set on the database!!! recordedFileName = '" + recordedFileName + "'");
 	            	db.execute('UPDATE MiscueSession SET recordedAudioFilename =?, lastModifiedDate=?,isSessionModified = ?,isLastEditedSession = ? WHERE userId=? AND sessionGuid = ?',recordedFileName,createLastModifiedDate(),'true','true',userId,sessionGuid);
 	            	db.close();
 	
@@ -1753,6 +1755,7 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	                file.deleteFile();
 	                playView.visible = false;
 	                file = 'null';
+	                Ti.API.info("---------- BEN - recordedFileName is being set on the database (2)!!! recordedFileName = '" + recordedFileName + "'");
 	                db.execute('UPDATE MiscueSession SET recordedAudioFilename =?, lastModifiedDate=?,isSessionModified = ?,isLastEditedSession = ? WHERE userId=? AND sessionGuid = ?','null',createLastModifiedDate(),'true','true',userId,sessionGuid);
 	                db.close();
 	                playImage.image  = '/images/blurPlay.png';
@@ -1888,6 +1891,7 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	    //Creating function for saving the miscue session on back/save button click
 	    function saveMiscueSessionOnBackButton()
 	    {
+	    	//V1.9 SDK7 - I added this for debugging. TODO DELETE ME
 	    	checkDevicePermissions();
 	    	
 	    	if(singletapwin.visible == true)
@@ -1923,6 +1927,9 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	                //V1.9 SDK7 - Added r_loadingScreen
 	                r_loadingScreen.showActivity(labelArray['message'], usrname);
 	                //showActivity(labelArray['message'], usrname);
+	                
+	                Ti.API.info("---------- BEN - I am saving using the audio file which I got from the database = '" + file.getName() + "'");
+	                
 	                if (file != 'null' && file != null) // -Lee adding && file != null stops this falling over, but now saving dialog never goes away.
 	                {
 	                    file = file.getName(); //-Lee getting occational error here - cannot call method getName on null ??? is the check valid?
@@ -1936,10 +1943,12 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	                var localSliderValueString = accuracyLabel.text;
 	                Ti.API.info('localSliderValueString : '+localSliderValueString);
 	                Ti.API.info('insert/update single value at save'+localSliderValueString+'with bookGUID='+bookGuid+' and user id '+userId+ ' learner guid '+learnerguid);
+	                Ti.API.info("---------- BEN - First, I am updating the local database");
 	                var db = Titanium.Database.open('Miscue');
 	                db.execute('UPDATE MiscueSession SET sliderValue = ? WHERE bookGUID = ? AND userId = ? AND learnerGuid = ?', localSliderValueString, bookGuid, userId,learnerguid);
 	     			db.close();
 	     			//V1.9 SDK7 - Added r_HomeScreen
+	     			Ti.API.info("---------- BEN - Then I am calling HomeScreen.createSubmitMiscueSession which also creates me on the local database");
 	     			r_HomeScreen.createSubmitMiscueSession (userId,sessionGuid,token,sessionWin,isSessionBookPage,token, file,accuracyLabel.text);
 	                //createSubmitMiscueSession (userId,sessionGuid,token,sessionWin,isSessionBookPage,token, file,accuracyLabel.text);//Calling function from home.js
 	                if(!Ti.Network.online)

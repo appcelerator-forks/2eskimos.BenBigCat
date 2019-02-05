@@ -74,13 +74,7 @@ function createApi(url, strng, text1, text2, flag, modal, apiCount, menuItemKey,
 				Ti.API.info("---------- BEN - audioDir = " + Ti.Filesystem.applicationDataDirectory);
 				Ti.API.info("---------- BEN - audioFileName changed to = " + audioFileName);
 				
-				Ti.API.info("---------- BEN - Attempting to read audioFileName...");
-				
-				var contents = audioFileName.read();
-				
-				Ti.API.info("---------- BEN - Read audioFileName successfully");
-				
-				Ti.API.info("---------- BEN - audioFileName changed to (2) = " + contents.text);
+				Ti.API.info("---------- BEN - audioFileName changed to (2) = " + audioFileName.nativePath);
 				
 			}
 			var var1 = 'requestXML';
@@ -94,8 +88,11 @@ function createApi(url, strng, text1, text2, flag, modal, apiCount, menuItemKey,
 			header += " filename=\"" + filename + "\"\r\n";
 			header += "Content-Type: application/octet-stream\r\n\r\n";
 			var content = audioFileName.read();
+			Ti.API.info("---------- BEN - content = " + content);
 			content = Ti.Utils.base64encode(content);
+			Ti.API.info("---------- BEN - content 2 = " + content);
 			var fullContent = header + content + "\r\n--" + boundary;
+			Ti.API.info("---------- BEN - fullContent = " + fullContent);
 			loginReq.open("POST", url);
 
 			loginReq.setRequestHeader('enctype', 'multipart/form-data');
@@ -172,6 +169,8 @@ function createApi(url, strng, text1, text2, flag, modal, apiCount, menuItemKey,
 
 	}
 	
+	Ti.API.info("---------- BEN - Should skip to here...");
+	
 	loginReq.onload = function() 
 	{   
 		xmldata = this.responseText;
@@ -210,6 +209,7 @@ function createApi(url, strng, text1, text2, flag, modal, apiCount, menuItemKey,
 		{
 			Ti.API.log("XML data for flag==5 is :: ", xmldata);
 			//V1.9 SDK7 - Added r_sessionBookPage
+			
 			r_sessionBookPage.createSavePendingMiscueSessionToServer(xmldata, text2, menuItemKey, modal, apiCount, sessionCount, button_Id, audioFileName, fontcolour, backcolour, pagefontfamily, isPageName, tableView, text1, loopEnds, submitSession);
 			//createSavePendingMiscueSessionToServer(xmldata, text2, menuItemKey, modal, apiCount, sessionCount, button_Id, audioFileName, fontcolour, backcolour, pagefontfamily, isPageName, tableView, text1, loopEnds, submitSession);
 			//sessionBookPage.js(line No-291)

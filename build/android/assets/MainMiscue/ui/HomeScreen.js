@@ -1026,6 +1026,8 @@ function createActivityIndicator(message) {
 //1.9 SDK7 - Changed duplicate 'token' parameter to 'tokenDuplicate'
 function createSubmitMiscueSession(userId, sessionGuid, token, sessionWindow, isSessionBookPage, tokenDuplicate, file, sliderValue) {
 	Ti.API.info('slider value got here '+sliderValue);
+	Ti.API.info("---------- BEN - Creating session on local (I think) database. token = '" + token + "' & tokenDuplicate = '" + tokenDuplicate + "'");
+	Ti.API.info("---------- BEN - file.nativePath = '" + file.nativePath + "'");
 	var newSessionStatus,
 	    miscueDataXml;
 	var db = Titanium.Database.open('Miscue');
@@ -1172,7 +1174,7 @@ function createSaveMiscueSessionToServer(userId, sessionGuid, token, sessionWind
 				saveMiscueXML = '<request><requesttype>SAVEMISCUE</requesttype><status>' + sessionStatus[x] + '</status><accesstoken>' + token + '</accesstoken>' + '<sessionGUID>' + sessionGUID[x] + '</sessionGUID>' + '<sessionDate>' + sessionDate + '</sessionDate><learnerGUID>' + learnerGUID[x] + '</learnerGUID><bookGUID>' + bookGUID[x] + '</bookGUID><notes>' + sessionNotes[x] + '</notes><sliderValue>' +sliderValue+'</sliderValue><miscues>' + miscues[x] + '</miscues> </request>';
 				
 				//V1.9 SDK7 - Added r_Apifile
-				Ti.API.info("---------- BEN - doing createApi");
+				Ti.API.info("---------- BEN - doing createApi. Flag = " + flag);
 				r_Apifile.createApi(base_URL, saveMiscueXML, loginUserName, userId, flag, sessionWindow, sessionGuid, isSessionBookPage, token, file);
 				Ti.API.info("---------- BEN - TEST COMPLETE");
 				//createApi(base_URL, saveMiscueXML, loginUserName, userId, flag, sessionWindow, sessionGuid, isSessionBookPage, token, file);

@@ -243,6 +243,7 @@ exports.InsertGroup = InsertGroup;
   
   function insertMiscueSession (session_Guid,user_Id,msicue_DataXml,session_Date,book_GUID,session_Status,learner_Guid,accuaracy_Value,session_Notes,lastmodified_Date,lastSavedServer_Date,isLastEdited_Session,isSession_Modified, recordedAudioFilename, createdDate, createdTime) 
   {
+  	Ti.API.info("---------- BEN - recordedFileName is being set on the database (3)!!! recordedAudioFilename = '" + recordedAudioFilename + "'");
    var db = Titanium.Database.open('Miscue');
      db.execute("INSERT INTO MiscueSession (sessionGuid, userId, miscueDataXml, sessiondate, bookGUID,  sessionStatus,learnerGuid,accuracyValue,sessionNotes,lastModifiedDate,lastSavedToServerDate,isLastEditedSession,isSessionModified,recordedAudioFilename, createdDate, createdTime) VALUES ( '"+ session_Guid + "','" + user_Id + "','" + msicue_DataXml + "','" + session_Date + "','" + book_GUID + "','" + session_Status + "','" + learner_Guid + "','" + accuaracy_Value + "','" + session_Notes + "','" + lastmodified_Date + "','" + lastSavedServer_Date + "','" + isLastEdited_Session + "','" + isSession_Modified + "','" + recordedAudioFilename + "','" + createdDate + "','" + createdTime + "')");
      db.close(); 
