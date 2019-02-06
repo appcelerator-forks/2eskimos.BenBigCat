@@ -1900,7 +1900,7 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	    		
 	    		Ti.API.info("---------- BEN - Attempting to move audio file to permanent storage...");
 	    		
-		    	if(file !== null)
+		    	if(file !== 'null')
 		    	{
 			        var temp = file.nativePath.split("/");
 			        var audioFileName = temp[temp.length - 1];
