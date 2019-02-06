@@ -1607,20 +1607,13 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	                var tempFileName = temp[temp.length - 1];
 	                
 	                //Ti.API.info("---------- BEN - Ti.Filesystem.applicationCacheDirectory = " + Ti.Filesystem.applicationCacheDirectory);
-	                Ti.API.info("---------- BEN - The audio file itself is called = " + tempFileName);
 	                
-	                var tempAudioFile = Ti.Filesystem.getFile(Ti.Filesystem.applicationCacheDirectory, tempFileName);
-	                
-	                var newFileDirectory = Ti.Filesystem.applicationDataDirectory + "/" + tempFileName;
-	                Ti.API.info("---------- BEN - Attempting to move audio file from the cache to the application data directory. The new directroy will be: " + newFileDirectory);
-	                tempAudioFile.move(newFileDirectory);
-	                Ti.API.info("---------- BEN - file was successfully moved from the cache to the application data directory!");
 	                
 	                //V1.9 SDK7 new implementation of audioPlayer
 	                sound = audioPlayer = Ti.Media.createAudioPlayer(
 	                {
-	    				//url: file.nativePath
-	    				url: newFileDirectory
+	    				url: file.nativePath
+	    				//url: newFileDirectory
 	  				});
 	                    
 	                recordImage.image = '/images/phase5/RECORD.png';
@@ -1825,73 +1818,110 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 		    }
 		});
 		
-		function checkDevicePermissions()
-		{
-            // also seems to check storage, even though its not explicitly asked for, and not flagged as required anywhere??
-			
-			Ti.API.info("----------BEN!!! Checking device permissions");
-			
-			if(Ti.Filesystem.hasStoragePermissions())
-			{
-				Ti.API.info("----------BEN!!! Has storage permissions...");
-			}
-			else
-			{
-				Ti.API.info("----------BEN!!! NOT have storage permissions...");
-			}
-			
-			
-            if (Ti.Media.hasCameraPermissions())
-            {
-                // I can access the camera!
-                Ti.API.info("----------BEN!!! I already have access to storage!");
-				return true;
-            }
-            else
-			{
-				Ti.API.info("----------BEN!!! I cannot access the storage, attempting to get access...");
-				try
-				{
-					
-					
-					Ti.API.info("----------BEN!!! Try started...");
-	                Ti.Media.requestCameraPermissions(function(e) 
-					{
-						Ti.API.info("----------BEN!!! Permission requested...");
-						
-	                    if (e.success) 
-	                    {
-	                    	// permissions granted
-	                    	Ti.API.info("----------BEN!!! I managed to get permission to storage.");
-							return true;
-	                    }
-	                    else
-	                    {
-	                        // user has denied access to the camera
-							
-	                        //_self.messageBox('I cannot access the camera, please check device Settings.');
-	                        
-							Ti.API.info("----------BEN!!! I cannot access the storage, please check device Settings.");
-							
-	                    	return false;
-	                	}
-	                	
-	                	Ti.API.info("----------BEN!!! End of permission request...");
-	            	});
-	            	Ti.API.info("----------BEN!!! End of try...");
-	            }
-	            catch(e)
-	            {
-	            	Ti.API.info("----------BEN!!! There was an error whilst trying to get access to the storage! Error: " + e);
-	            }
-			}
-       	}
+		
        	
 	    //Creating function for saving the miscue session on back/save button click
 	    function saveMiscueSessionOnBackButton()
 	    {
 	    	//V1.9 SDK7 - I added this for debugging. TODO DELETE ME
 	    	checkDevicePermissions();
+	    	
+	    	//1.9 SDK7 - Added this so that audio is saved between sessions
+	    	moveAudioToPermanentStorage();
+	    	
+	    	function checkDevicePermissions()
+			{
+	            // also seems to check storage, even though its not explicitly asked for, and not flagged as required anywhere??
+				
+				Ti.API.info("----------BEN!!! Checking device permissions");
+				
+				if(Ti.Filesystem.hasStoragePermissions())
+				{
+					Ti.API.info("----------BEN!!! Has storage permissions...");
+				}
+				else
+				{
+					Ti.API.info("----------BEN!!! NOT have storage permissions...");
+				}
+				
+				
+	            if (Ti.Media.hasCameraPermissions())
+	            {
+	                // I can access the camera!
+	                Ti.API.info("----------BEN!!! I already have access to storage!");
+					return true;
+	            }
+	            else
+				{
+					Ti.API.info("----------BEN!!! I cannot access the storage, attempting to get access...");
+					try
+					{
+						
+						
+						Ti.API.info("----------BEN!!! Try started...");
+		                Ti.Media.requestCameraPermissions(function(e) 
+						{
+							Ti.API.info("----------BEN!!! Permission requested...");
+							
+		                    if (e.success) 
+		                    {
+		                    	// permissions granted
+		                    	Ti.API.info("----------BEN!!! I managed to get permission to storage.");
+								return true;
+		                    }
+		                    else
+		                    {
+		                        // user has denied access to the camera
+								
+		                        //_self.messageBox('I cannot access the camera, please check device Settings.');
+		                        
+								Ti.API.info("----------BEN!!! I cannot access the storage, please check device Settings.");
+								
+		                    	return false;
+		                	}
+		                	
+		                	Ti.API.info("----------BEN!!! End of permission request...");
+		            	});
+		            	Ti.API.info("----------BEN!!! End of try...");
+		            }
+		            catch(e)
+		            {
+		            	Ti.API.info("----------BEN!!! There was an error whilst trying to get access to the storage! Error: " + e);
+		            }
+				}
+	       	}
+	    	
+	    	function moveAudioToPermanentStorage()
+	    	{
+	    		/*
+	    		 * V1.9 SDK7 - I added this function to move the audio file to permanent storage.
+	    		 * I did this because it was being saved to the cache and then was subsequently deleted when the app was closed.
+	    		 */
+	    		
+	    		Ti.API.info("---------- BEN - Moving file to permanent storage...");
+		    	
+		        var temp = file.nativePath.split("/");
+		        var audioFileName = temp[temp.length - 1];
+		        
+		        Ti.API.info("---------- BEN - The audio file itself is called = " + audioFileName);
+		        
+		        var cachedAudioFile = Ti.Filesystem.getFile(Ti.Filesystem.applicationCacheDirectory, audioFileName);
+		        
+		        
+		        if(!Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, audioFileName).exists())
+		        {
+			        var newFileDirectory = Ti.Filesystem.applicationDataDirectory + "/" + audioFileName;
+			        Ti.API.info("---------- BEN - Attempting to move audio file from the cache to the application data directory. The new directroy will be: " + newFileDirectory);
+			        cachedAudioFile.move(newFileDirectory);
+			        Ti.API.info("---------- BEN - file was successfully moved from the cache to the application data directory!");	
+		        }
+		        else
+		        {
+		        	Ti.API.info("---------- BEN - The audio file has already been saved to permanent storage.");	
+		        }
+		        
+		        
+	    	}
 	    	
 	    	if(singletapwin.visible == true)
 	        {
@@ -1927,7 +1957,6 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	                r_loadingScreen.showActivity(labelArray['message'], usrname);
 	                //showActivity(labelArray['message'], usrname);
 	                
-	                Ti.API.info("---------- BEN - I am saving using the audio file which I got from the database = '" + file.getName() + "'");
 	                
 	                if (file != 'null' && file != null) // -Lee adding && file != null stops this falling over, but now saving dialog never goes away.
 	                {
