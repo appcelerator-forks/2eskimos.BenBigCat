@@ -1899,6 +1899,9 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	    		 */
 	    		
 	    		Ti.API.info("---------- BEN - Moving file to permanent storage...");
+	    		Ti.API.info("---------- BEN - File = " + file);
+		    	
+		    	
 		    	
 		        var temp = file.nativePath.split("/");
 		        var audioFileName = temp[temp.length - 1];

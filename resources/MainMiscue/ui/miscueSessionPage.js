@@ -1898,29 +1898,33 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	    		 * I did this because it was being saved to the cache and then was subsequently deleted when the app was closed.
 	    		 */
 	    		
-	    		Ti.API.info("---------- BEN - Moving file to permanent storage...");
-		    	
-		        var temp = file.nativePath.split("/");
-		        var audioFileName = temp[temp.length - 1];
-		        
-		        Ti.API.info("---------- BEN - The audio file itself is called = " + audioFileName);
-		        
-		        var cachedAudioFile = Ti.Filesystem.getFile(Ti.Filesystem.applicationCacheDirectory, audioFileName);
-		        
-		        
-		        if(!Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, audioFileName).exists())
-		        {
-			        var newFileDirectory = Ti.Filesystem.applicationDataDirectory + "/" + audioFileName;
-			        Ti.API.info("---------- BEN - Attempting to move audio file from the cache to the application data directory. The new directroy will be: " + newFileDirectory);
-			        cachedAudioFile.move(newFileDirectory);
-			        Ti.API.info("---------- BEN - file was successfully moved from the cache to the application data directory!");	
-		        }
-		        else
-		        {
-		        	Ti.API.info("---------- BEN - The audio file has already been saved to permanent storage.");	
-		        }
-		        
-		        
+	    		Ti.API.info("---------- BEN - Attempting to move audio file to permanent storage...");
+	    		
+		    	if(file !== null)
+		    	{
+			        var temp = file.nativePath.split("/");
+			        var audioFileName = temp[temp.length - 1];
+			        
+			        Ti.API.info("---------- BEN - The audio file itself is called = " + audioFileName);
+			        
+			        var cachedAudioFile = Ti.Filesystem.getFile(Ti.Filesystem.applicationCacheDirectory, audioFileName);
+			        
+			        if(!Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, audioFileName).exists())
+			        {
+				        var newFileDirectory = Ti.Filesystem.applicationDataDirectory + "/" + audioFileName;
+				        Ti.API.info("---------- BEN - Attempting to move audio file from the cache to the application data directory. The new directroy will be: " + newFileDirectory);
+				        cachedAudioFile.move(newFileDirectory);
+				        Ti.API.info("---------- BEN - file was successfully moved from the cache to the application data directory!");	
+			        }
+			        else
+			        {
+			        	Ti.API.info("---------- BEN - The audio file has already been moved from the cache to permanent storage. Move will be skipped.");	
+			        }
+		    	}
+		    	else
+		    	{
+		    		Ti.API.info("---------- BEN - There was no audio file to move. Move will be skipped.");
+		    	}
 	    	}
 	    	
 	    	if(singletapwin.visible == true)
