@@ -1823,13 +1823,138 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	    //Creating function for saving the miscue session on back/save button click
 	    function saveMiscueSessionOnBackButton()
 	    {
+	    	Ti.API.info("----------BEN!!! The miscue session is being saved...");
+	    	
 	    	//V1.9 SDK7 - I added this for debugging. TODO DELETE ME
 	    	checkDevicePermissions();
 	    	
 	    	//1.9 SDK7 - Added this so that audio is saved between sessions
 	    	moveAudioToPermanentStorage();
 	    	
-	    	function checkDevicePermissions()
+	    	
+	    	
+	    	if(singletapwin.visible == true)
+	        {
+	        	Ti.API.info("----------BEN!!! singletapwin is visible!");
+	        	miscueMenuCloseView.visible = false;
+	            miscueMenuCloseView.touchEnabled = false;
+	            singletapwin.hide();
+	            singletapwin.visible = false;
+	            sessionwebview.touchEnabled = true;
+	        }
+	        else
+	        {
+	        	Ti.API.info("----------BEN!!! singletapwin is NOT visible!");
+				if(initialTextForAccuracyLabel !== accuracyLabel.text)
+			    {
+					var db = Titanium.Database.open('Miscue');
+					db.execute('UPDATE MiscueSession SET isSessionModified = ? WHERE userId=? AND sessionGuid = ?', 'true', userId, sessionGuid);
+					db.close();
+					db = null;
+			    }
+	            var db = Titanium.Database.open('Miscue');
+	            var checkEditSessionRow = db.execute("SELECT * FROM MiscueSession WHERE sessionGuid = ? AND userId = ? AND (isSessionModified = 'true' OR lastModifiedDate > lastSavedToServerDate OR lastSavedToServerDate = 'null') ",sessionGuid,userId);
+	            var checkEditSessionRowCount = checkEditSessionRow.rowCount;
+	            checkEditSessionRow.close();
+	            checkEditSessionRow = null;
+	            db.close();
+	            db = null;
+	
+	            /*if(checkEditSessionRowCount > 0)
+	            {*/
+	            	Ti.API.info('saving session');
+	                var labelArray = new Array();
+	                labelArray['message']=['saving_Indicator','Please wait...'];
+	                //V1.9 SDK7 - Added r_loadingScreen
+	                r_loadingScreen.showActivity(labelArray['message'], usrname);
+	                //showActivity(labelArray['message'], usrname);
+	                
+	                
+	                if (file != 'null' && file != null) // -Lee adding && file != null stops this falling over, but now saving dialog never goes away.
+	                {
+	                    file = file.getName(); //-Lee getting occational error here - cannot call method getName on null ??? is the check valid?
+	                }
+	                else
+	                {
+	                	file = 'null'; // -Lee forces file to be 'null' even if object is typeof null so code acts consistantly
+	                }
+	
+	                // -Lee Saving.. doesn't go away if wifi has been lost in mid session- probably isn't just file object thats getting destroyed
+	                var localSliderValueString = accuracyLabel.text;
+	                Ti.API.info('localSliderValueString : '+localSliderValueString);
+	                Ti.API.info('insert/update single value at save'+localSliderValueString+'with bookGUID='+bookGuid+' and user id '+userId+ ' learner guid '+learnerguid);
+	                Ti.API.info("---------- BEN - First, I am updating the 'sliderValue' (understanding) for this session on the local database.");
+	                var db = Titanium.Database.open('Miscue');
+	                db.execute('UPDATE MiscueSession SET sliderValue = ? WHERE bookGUID = ? AND userId = ? AND learnerGuid = ?', localSliderValueString, bookGuid, userId,learnerguid);
+	     			db.close();
+	     			//V1.9 SDK7 - Added r_HomeScreen
+	     			Ti.API.info("---------- BEN - Secondly, I am calling HomeScreen.createSubmitMiscueSession which finishes off creating me on the local database. A file is sent to this function. The type is = " + file + " and the directory is = " + file.nativePath);
+	     			r_HomeScreen.createSubmitMiscueSession (userId,sessionGuid,token,sessionWin,isSessionBookPage,token, file,accuracyLabel.text);
+	                //createSubmitMiscueSession (userId,sessionGuid,token,sessionWin,isSessionBookPage,token, file,accuracyLabel.text);//Calling function from home.js
+	                if(!Ti.Network.online)
+	                {
+	    				//V1.9 SDK7 - Added r_loadingScreen
+	                    r_loadingScreen.hideActivity();
+	                    //hideActivity();
+	                    if(isSessionBookPage == 'book')
+	                    {
+	                    	//1.9 SDK7 - Added r_miscue as tt is undefined
+	                        //var miscuewindow = tt.ui.createmiscueMenuPage(usrname,token,menuItemKey,userId);
+	                        var miscuewindow = r_miscue.tt.ui.createmiscueMenuPage(usrname,token,menuItemKey,userId);
+	                        miscuewindow.open();
+	                        sessionWin.close();
+	                    } // isSessionBookPage != 'book'
+	                    else if(isSessionBookPage == 'search')
+	                    {
+	                    	//1.9 SDK7 - Added r_miscue as tt is undefined
+	                        //var searchSession =  tt.ui.createsearchSession(usrname,userId,token,menuItemKey);
+	                        var searchSession =  r_miscue.tt.ui.createsearchSession(usrname,userId,token,menuItemKey);
+	                        searchSession.open();
+	                        sessionWin.close();
+	                    }
+	                }
+	                //hideActivity(); // -Lee Saving... not going away if wifi lost and restored...
+	                // M6D-1(A popup should appear with "please wait" whilst the save is taking place) resolved by applying comment to above line
+	            /*} // CheckEditSessionRowCount ! > 0
+	            
+	            else
+	            {
+	            	Ti.API.info("----------BEN!!! Using ALTERNATIVE session save method");
+					if (isSessionBookPage == 'book') 
+					{
+						//1.9 SDK7 - Added r_miscue as tt is undefined
+						//var miscuewindow = tt.ui.createmiscueMenuPage(usrname, token, menuItemKey, userId);
+						var miscuewindow = r_miscue.tt.ui.createmiscueMenuPage(usrname, token, menuItemKey, userId);
+						miscuewindow.open();
+						sessionWin.close();
+					} 
+					else if (isSessionBookPage == 'search') 
+					{
+						var localSliderValueString = accuracyLabel.text;
+	                   	Ti.API.info('search localSliderValueString : '+localSliderValueString);
+	                   	//1.9 SDK7 - Added r_miscue as tt is undefined
+	                   	//var searchSession = tt.ui.createsearchSession(usrname, userId, token, menuItemKey);
+						var searchSession = r_miscue.tt.ui.createsearchSession(usrname, userId, token, menuItemKey);
+						searchSession.open();
+						sessionWin.close();
+					}
+	            }
+	            */
+	            file = null;
+	            Ti.App.removeEventListener('app:single', singleTap);
+	            Ti.App.removeEventListener('app:long', longTap);
+	        }
+	        Ti.App.Properties.setString('isAudioPlayingProcess', 'false');
+			//MAL alert('For your reading results visit the Reading Assessment Centre at BigCatAssessment.com','Saved successfully');
+			Ti.UI.createAlertDialog(
+			{
+				title:'Saved successfully',
+				message:Ti.App.Properties.getString("readingResultsMessage")
+			}).show();
+			
+			
+			
+			function checkDevicePermissions()
 			{
 	            // also seems to check storage, even though its not explicitly asked for, and not flagged as required anywhere??
 				
@@ -1912,7 +2037,7 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 			        if(!Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, audioFileName).exists())
 			        {
 				        var newFileDirectory = Ti.Filesystem.applicationDataDirectory + "/" + audioFileName;
-				        Ti.API.info("---------- BEN - Attempting to move audio file from the cache to the application data directory. The new directroy will be: " + newFileDirectory);
+				        Ti.API.info("---------- BEN - Attempting to move audio file from the cache to the application data directory. The new directory will be: " + newFileDirectory);
 				        cachedAudioFile.move(newFileDirectory);
 				        Ti.API.info("---------- BEN - file was successfully moved from the cache to the application data directory!");	
 			        }
@@ -1926,120 +2051,6 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 		    		Ti.API.info("---------- BEN - There was no audio file to move. Move will be skipped.");
 		    	}
 	    	}
-	    	
-	    	if(singletapwin.visible == true)
-	        {
-	        	miscueMenuCloseView.visible = false;
-	            miscueMenuCloseView.touchEnabled = false;
-	            singletapwin.hide();
-	            singletapwin.visible = false;
-	            sessionwebview.touchEnabled = true;
-	        }
-	        else
-	        {
-				if(initialTextForAccuracyLabel !== accuracyLabel.text)
-			    {
-					var db = Titanium.Database.open('Miscue');
-					db.execute('UPDATE MiscueSession SET isSessionModified = ? WHERE userId=? AND sessionGuid = ?', 'true', userId, sessionGuid);
-					db.close();
-					db = null;
-			    }
-	            var db = Titanium.Database.open('Miscue');
-	            var checkEditSessionRow = db.execute("SELECT * FROM MiscueSession WHERE sessionGuid = ? AND userId = ? AND (isSessionModified = 'true' OR lastModifiedDate > lastSavedToServerDate OR lastSavedToServerDate = 'null') ",sessionGuid,userId);
-	            var checkEditSessionRowCount = checkEditSessionRow.rowCount;
-	            checkEditSessionRow.close();
-	            checkEditSessionRow = null;
-	            db.close();
-	            db = null;
-	
-	            if(checkEditSessionRowCount > 0)
-	            {
-	            	Ti.API.info('saving session');
-	                var labelArray = new Array();
-	                labelArray['message']=['saving_Indicator','Please wait...'];
-	                //V1.9 SDK7 - Added r_loadingScreen
-	                r_loadingScreen.showActivity(labelArray['message'], usrname);
-	                //showActivity(labelArray['message'], usrname);
-	                
-	                
-	                if (file != 'null' && file != null) // -Lee adding && file != null stops this falling over, but now saving dialog never goes away.
-	                {
-	                    file = file.getName(); //-Lee getting occational error here - cannot call method getName on null ??? is the check valid?
-	                }
-	                else
-	                {
-	                	file = 'null'; // -Lee forces file to be 'null' even if object is typeof null so code acts consistantly
-	                }
-	
-	                // -Lee Saving.. doesn't go away if wifi has been lost in mid session- probably isn't just file object thats getting destroyed
-	                var localSliderValueString = accuracyLabel.text;
-	                Ti.API.info('localSliderValueString : '+localSliderValueString);
-	                Ti.API.info('insert/update single value at save'+localSliderValueString+'with bookGUID='+bookGuid+' and user id '+userId+ ' learner guid '+learnerguid);
-	                Ti.API.info("---------- BEN - First, I am updating the 'sliderValue' (understanding) for this session on the local database.");
-	                var db = Titanium.Database.open('Miscue');
-	                db.execute('UPDATE MiscueSession SET sliderValue = ? WHERE bookGUID = ? AND userId = ? AND learnerGuid = ?', localSliderValueString, bookGuid, userId,learnerguid);
-	     			db.close();
-	     			//V1.9 SDK7 - Added r_HomeScreen
-	     			Ti.API.info("---------- BEN - Secondly, I am calling HomeScreen.createSubmitMiscueSession which finishes off creating me on the local database. A file is sent to this function. The type is = " + file + " and the directory is = " + file.nativePath);
-	     			r_HomeScreen.createSubmitMiscueSession (userId,sessionGuid,token,sessionWin,isSessionBookPage,token, file,accuracyLabel.text);
-	                //createSubmitMiscueSession (userId,sessionGuid,token,sessionWin,isSessionBookPage,token, file,accuracyLabel.text);//Calling function from home.js
-	                if(!Ti.Network.online)
-	                {
-	    				//V1.9 SDK7 - Added r_loadingScreen
-	                    r_loadingScreen.hideActivity();
-	                    //hideActivity();
-	                    if(isSessionBookPage == 'book')
-	                    {
-	                    	//1.9 SDK7 - Added r_miscue as tt is undefined
-	                        //var miscuewindow = tt.ui.createmiscueMenuPage(usrname,token,menuItemKey,userId);
-	                        var miscuewindow = r_miscue.tt.ui.createmiscueMenuPage(usrname,token,menuItemKey,userId);
-	                        miscuewindow.open();
-	                        sessionWin.close();
-	                    } // isSessionBookPage != 'book'
-	                    else if(isSessionBookPage == 'search')
-	                    {
-	                    	//1.9 SDK7 - Added r_miscue as tt is undefined
-	                        //var searchSession =  tt.ui.createsearchSession(usrname,userId,token,menuItemKey);
-	                        var searchSession =  r_miscue.tt.ui.createsearchSession(usrname,userId,token,menuItemKey);
-	                        searchSession.open();
-	                        sessionWin.close();
-	                    }
-	                }
-	                //hideActivity(); // -Lee Saving... not going away if wifi lost and restored...
-	                // M6D-1(A popup should appear with "please wait" whilst the save is taking place) resolved by applying comment to above line
-	            } // CheckEditSessionRowCount ! > 0
-	            else
-	            {
-					if (isSessionBookPage == 'book') 
-					{
-						//1.9 SDK7 - Added r_miscue as tt is undefined
-						//var miscuewindow = tt.ui.createmiscueMenuPage(usrname, token, menuItemKey, userId);
-						var miscuewindow = r_miscue.tt.ui.createmiscueMenuPage(usrname, token, menuItemKey, userId);
-						miscuewindow.open();
-						sessionWin.close();
-					} 
-					else if (isSessionBookPage == 'search') 
-					{
-						var localSliderValueString = accuracyLabel.text;
-	                   	Ti.API.info('search localSliderValueString : '+localSliderValueString);
-	                   	//1.9 SDK7 - Added r_miscue as tt is undefined
-	                   	//var searchSession = tt.ui.createsearchSession(usrname, userId, token, menuItemKey);
-						var searchSession = r_miscue.tt.ui.createsearchSession(usrname, userId, token, menuItemKey);
-						searchSession.open();
-						sessionWin.close();
-					}
-	            }
-	            file = null;
-	            Ti.App.removeEventListener('app:single', singleTap);
-	            Ti.App.removeEventListener('app:long', longTap);
-	        }
-	        Ti.App.Properties.setString('isAudioPlayingProcess', 'false');
-			//MAL alert('For your reading results visit the Reading Assessment Centre at BigCatAssessment.com','Saved successfully');
-			Ti.UI.createAlertDialog(
-			{
-				title:'Saved successfully',
-				message:Ti.App.Properties.getString("readingResultsMessage")
-			}).show();
 		}
 	
 	    //V1.8 Ben UPDATE - Renamed this to 'save' button event listner (was incorrectly named 'back' event listener)
