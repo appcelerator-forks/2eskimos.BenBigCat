@@ -1049,10 +1049,11 @@ function createSubmitMiscueSession(userId, sessionGuid, token, sessionWindow, is
 		
 		db.execute('UPDATE MiscueSession SET recordedAudioFilename = ? WHERE sessionGuid = ? AND userId = ? AND learnerGuid = ?', file, sessionGuid, userId, learnerGuid);
 		
-		
+		Ti.API.info("---------- BEN - 2");
 		Ti.API.info('slider value got from db at submit '+sliderValueLocal+' :bookguid '+bookguid+ ' user id '+userId+ ' learner guid'+learnerGuid);
 		if (isModified == 'true' || sessionstatus == 'DRAFT' || lastSavedToServer == 'null' || (modifiedDate > lastSavedToServer)) 
 		{
+			Ti.API.info("---------- BEN - 3");
 			if (sessionstatus == 'DRAFT') 
 			{
 				newSessionStatus = 'CREATED';
@@ -1081,6 +1082,7 @@ function createSubmitMiscueSession(userId, sessionGuid, token, sessionWindow, is
 				createSaveMiscueSessionToServer(userId, sessionGuid, token, sessionWindow, isSessionBookPage, file, sliderValue);
 			}
 		}
+		Ti.API.info("---------- BEN - 4");
 	} else {
 		db.close();
 	}

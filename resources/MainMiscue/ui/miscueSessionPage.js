@@ -1892,8 +1892,11 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	     			Ti.API.info("---------- BEN - Secondly, I am calling HomeScreen.createSubmitMiscueSession which finishes off creating me on the local database. A file is sent to this function. The type is = " + file + " and the directory is = " + file.nativePath);
 	     			r_HomeScreen.createSubmitMiscueSession (userId,sessionGuid,token,sessionWin,isSessionBookPage,token, file,accuracyLabel.text);
 	                //createSubmitMiscueSession (userId,sessionGuid,token,sessionWin,isSessionBookPage,token, file,accuracyLabel.text);//Calling function from home.js
-	                if(!Ti.Network.online)
-	                {
+	                Ti.API.info("---------- BEN - Successfully completed HomeScreen.createSubmitMiscueSession." );
+	                
+	                //This if statement seems silly. The user still needs redirecting, regardless of if there is a network connection or not
+	                /*if(!Ti.Network.online)
+	                {*/
 	    				//V1.9 SDK7 - Added r_loadingScreen
 	                    r_loadingScreen.hideActivity();
 	                    //hideActivity();
@@ -1913,7 +1916,11 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	                        searchSession.open();
 	                        sessionWin.close();
 	                    }
-	                }
+	                /*}
+	                else
+	                {
+	                	Ti.API.info("---------- BEN - There is a network connection so no need to change the page.");	
+	                }*/
 	                //hideActivity(); // -Lee Saving... not going away if wifi lost and restored...
 	                // M6D-1(A popup should appear with "please wait" whilst the save is taking place) resolved by applying comment to above line
 	            /*} // CheckEditSessionRowCount ! > 0
@@ -2026,7 +2033,7 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	    		
 	    		Ti.API.info("---------- BEN - Attempting to move audio file to permanent storage...");
 	    		
-		    	if(file !== 'null')
+		    	if(file !== 'null' && file !== null)
 		    	{
 			        var temp = file.nativePath.split("/");
 			        var audioFileName = temp[temp.length - 1];
