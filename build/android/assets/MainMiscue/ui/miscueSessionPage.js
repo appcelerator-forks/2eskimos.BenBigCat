@@ -2889,7 +2889,16 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 		        					else
 		        					{
 		            					var previousvalue = Valstr[countval - 1];
-		            					var previousvalueLength = previousvalue.length;
+		            					
+		            					//V1.9 SDK7 - previousvalue was sometimes null / undefined.
+		            					//This variable is never used so it seems pointless anyway?
+		            					//Plus, it's out of scope for everything other than the line
+		            					//below (which also doesn't use it).
+		            					if(previousvalue !== null && previousvalue !=='null')
+		            					{
+		            						var previousvalueLength = previousvalue.length;	
+		            					}
+		            					
 		            					var previousvalindex = countval - 1;
 		        					}
 		        					
