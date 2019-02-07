@@ -2894,7 +2894,7 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 		            					//This variable is never used so it seems pointless anyway?
 		            					//Plus, it's out of scope for everything other than the line
 		            					//below (which also doesn't use it).
-		            					if(previousvalue !== null && previousvalue !=='null')
+		            					if(previousvalue !== null && previousvalue !=='null' && previousvalue !== undefined && previousvalue !== 'undefined')
 		            					{
 		            						var previousvalueLength = previousvalue.length;	
 		            					}
