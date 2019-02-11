@@ -2566,6 +2566,8 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	    Ti.Gesture.addEventListener('orientationchange', orientionChangeMode);
 	    function orientionChangeMode(e)
 	    {
+	    	//V1.9 SDK7 - Rotation event handlers cause screen flicker and are otherwise pointless.
+			return;
 	    	//var orientVal = e.orientation;
 	        Ti.API.info('change orentaion call');
 	       	var orientVal = e.source.orientation;
@@ -2894,7 +2896,7 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 		            					//This variable is never used so it seems pointless anyway?
 		            					//Plus, it's out of scope for everything other than the line
 		            					//below (which also doesn't use it).
-		            					if(previousvalue !== null && previousvalue !=='null')
+		            					if(previousvalue !== null && previousvalue !=='null' && previousvalue !== undefined && previousvalue !== 'undefined')
 		            					{
 		            						var previousvalueLength = previousvalue.length;	
 		            					}

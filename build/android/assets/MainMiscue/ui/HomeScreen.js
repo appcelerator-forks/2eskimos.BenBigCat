@@ -737,7 +737,8 @@ var myUserId;
 
 		var orientCount = 6;
 
-		function createChangeAlignmentPositions(orientVal, orientationVal) {
+		function createChangeAlignmentPositions(orientVal, orientationVal) 
+		{
 			Ti.API.log("createChangeAlignmentPositions() called :: ", orientVal + " :: " + orientationVal);
 			
 			//V1.9 SDK7 - Added r_loadingScreen
@@ -747,10 +748,13 @@ var myUserId;
 			homeScreenBackgroundImage.width = screenRes[0];
 			//V1.9 SDK7 - isLandscape is no longer a function! 
 			//if (Ti.Gesture.isLandscape()) {
-			if (Ti.Platform.displayCaps.platformWidth > Ti.Platform.displayCaps.platformHeight) {
+			if (Ti.Platform.displayCaps.platformWidth > Ti.Platform.displayCaps.platformHeight) 
+			{
 				titleLabel.top = this_logoutButton.height + this_logoutButton.top - 10;
 
-			} else {
+			} 
+			else 
+			{
 				titleLabel.top = this_logoutButton.height + this_logoutButton.top + 10;
 			}
 			orientCount = orientationVal;
@@ -760,8 +764,10 @@ var myUserId;
 			var lwidth = Ti.Platform.displayCaps.platformWidth;
 			clickCount = 0;
 			tableView.removeEventListener('click', tableViewClickEvent);
-			for (var x in homeWin.children ) {
-				if (homeWin.children.length >= 3) {
+			for (var x in homeWin.children ) 
+			{
+				if (homeWin.children.length >= 3) 
+				{
 					tableDataValue = null;
 					homeWin.remove(tableView);
 					break;
@@ -769,6 +775,8 @@ var myUserId;
 			}
 			tableDataValue = createMenupage(lwidth, userId);
 			screenHeaderLabel();
+			
+			Ti.API.info("Finished createChangeAlignmentPositions");
 		}
 
 		function getOrientation(orientVal) {
@@ -791,23 +799,39 @@ var myUserId;
 				break;
 			}
 			Ti.API.log("getOrientation() called :: ", value);
+			
 			return value;
+			
 		}
 
-		function orientionChangeMode(e) {
+		function orientionChangeMode(e) 
+		{
+			//V1.9 SDK7 - Rotation event handlers cause screen flicker and are otherwise pointless.
+			return;
+			Ti.API.info("---------- BEN - e = " + e);
 			var orientVal = e.source.orientation;
+			Ti.API.info("---------- BEN - e.source.orientation = " + orientVal);
 			var orientationVal = getOrientation(orientVal);
-			if(Inch >= InchValue || osname=='ipad'){
-				if (osname == 'android') {
+			Ti.API.info("---------- BEN - orientationVal = " + orientationVal);
+			if(Inch >= InchValue || osname=='ipad')
+			{
+				if (osname == 'android') 
+				{
 					Ti.API.log("orientionChangeMode() called :: ", "orientionChangeMode() called");
+					Ti.API.info("---------- BEN - createChangeAlignmentPositions called 1");
 					createChangeAlignmentPositions(orientVal, orientationVal);
-				} else {
-					if (orientationVal != orientCount && orientationVal != 0) {
+				} 
+				else 
+				{
+					if (orientationVal != orientCount && orientationVal != 0) 
+					{
+						Ti.API.info("---------- BEN - createChangeAlignmentPositions called 2");
 						createChangeAlignmentPositions(orientVal, orientationVal);
 					}
 				}	
 			}			
 		}
+		
 	//mal 175
 	if (Ti.App.Properties.getString("doNetworkCheck")=="1" && Ti.Network.online==true && 1==0 ){
 		alert('check');

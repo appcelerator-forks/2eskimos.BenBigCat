@@ -133,6 +133,8 @@ var screenRes = r_loadingScreen.backgroundImageHeightWidthPxToDp();
      //Oreintation changes
     Ti.Gesture.addEventListener('orientationchange', orientionChangeMode);
     function orientionChangeMode(e) {
+    	//V1.9 SDK7 - Rotation event handlers cause screen flicker and are otherwise pointless.
+			return;
     	//V1.9 SDK7 - Added r_loadingScreen
     	var screenRes = r_loadingScreen.backgroundImageHeightWidthPxToDp();
           //var screenRes = backgroundImageHeightWidthPxToDp();

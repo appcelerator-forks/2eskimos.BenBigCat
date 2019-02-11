@@ -687,6 +687,8 @@ var r_HomeScreen = require('/MainMiscue/ui/HomeScreen');
        
       function orientionChangeMode(e)
       { 
+      	//V1.9 SDK7 - Rotation event handlers cause screen flicker and are otherwise pointless.
+			return;
            var orientVal = e.source.orientation;
            var orientationVal = getOrientation(orientVal);
            // if(Inch >= InchValue || osname=='ipad'){// after changing the portrait only support for all devices

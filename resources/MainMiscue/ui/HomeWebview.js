@@ -379,6 +379,8 @@
      var orientCount = 6;
      
 function orientionChangeMode(e) {
+	//V1.9 SDK7 - Rotation event handlers cause screen flicker and are otherwise pointless.
+			return;
        var orientVal = e.source.orientation;
        var orientationVal = getOrientation(orientVal);
     if(orientationVal != orientCount && orientationVal != 0)

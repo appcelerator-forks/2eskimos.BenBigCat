@@ -2566,6 +2566,8 @@ var r_Miscuedb = require('/MainMiscue/model/Miscuedb');
 	    Ti.Gesture.addEventListener('orientationchange', orientionChangeMode);
 	    function orientionChangeMode(e)
 	    {
+	    	//V1.9 SDK7 - Rotation event handlers cause screen flicker and are otherwise pointless.
+			return;
 	    	//var orientVal = e.orientation;
 	        Ti.API.info('change orentaion call');
 	       	var orientVal = e.source.orientation;
